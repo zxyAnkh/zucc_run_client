@@ -8,25 +8,26 @@ import * as urls from '../common/urls';
 import * as types from '../common/types';
 import * as Storage from '../common/storage';
 import Util from '../common/utils';
+import {
+	ToastAndroid,
+} from 'react-native';
 
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
-	let data = {
-		no: no,
-		password: pwd
-	};
-	return no === '12345678' && pwd === '1' ? true : false;
-	// return ({
-	// 	Util.post(url, data, 
-	// 		(status, code, message, data, share) => {
-	// 			let user = {};
-	// 			if(status){
-	// 				user = data.user;
-	// 				// get user & run data. storage user & run data.
-	// 			}
-	// 	},
-	// 	(error) => {
+	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
+	// form data = userno=?&password=?
+	// return no === '12345678' && pwd === '1' ? true : false;
 
-	// 	});
-	// };
+	return (
+		Util.postform(url, data, (responseJson) => {
+			// console.log(responseJson);
+			for(var i = 0; i < responseJson.length; i++){
+				console.log(responseJson[i]);
+			}
+			true;
+		}, (err) => {
+			console.log(err);
+			false;
+		})
+	);
 };

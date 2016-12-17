@@ -8,8 +8,7 @@ let Util = {
         fetch(url)
             .then((response) => response.text())
             .then((responseText) => {
-                let result = JSON.parse(responseText);
-                successCallback(result.status, result.code, result.message, result.data, result.share);
+                successCallback(responseText);
             })
             .catch((err) => {
                 failCallback(err);
@@ -35,6 +34,24 @@ let Util = {
                 failCallback(err);
             });
 	},
+    postform: (url, data, successCallback, failCallback) => {
+        let fetchOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: data
+        };
+
+        fetch(url, fetchOptions)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                successCallback(responseJson);
+            })
+            .catch((err) => {
+                failCallback(err);
+            });
+    },
 }
 
 export default Util;

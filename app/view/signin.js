@@ -59,6 +59,7 @@ export default class SignInView extends React.Component{
       // auth...
       InteractionManager.runAfterInteractions(() => {
         let result = auth(no, pwd);
+        console.log(result);
         if(result === true){
           this.props.navigator.push({id: 'home'});
           this.state.logined = true;

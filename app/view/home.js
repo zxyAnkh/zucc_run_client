@@ -19,14 +19,10 @@ export default class HomeView extends React.Component{
 
 	  this.state = {
 	  	dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-        		getRowData: (data, sectionID, rowID) => {
-        			return dataSource[sectionID][rowID];
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        		getRowData: (data, rowID) => {
+        			return dataSource[rowID];
         		},
-        		getSectionHeaderData: (data, sectionID) => {
-        			return dataSource[sectionID];
-        		},
-        		sectionHeaderHasChanged: (section1, section2) => section1 !== section2,
         })
 	  };
 	}
@@ -63,23 +59,9 @@ export default class HomeView extends React.Component{
   	}
 
 	  render(){
-		  let sourceData = this._fetchData();
-		  var sectionIDs = ['no', 'time', 'cost'];
-		  var rowIDs = [[1, 2, 3]];
-		  let row = [];
-
-		  for(let i = 0; i < sourceData.length; i++){
-			 row.push(i);
-		  }
-
 		  return (
 			  <View>
-				  <ListView
-					  dataSource={this.state.dataSource.cloneWithRows(sourceData)}
-                    renderRow={this._renderRow.bind(this)}
-                    renderHeader={this._renderHeader.bind(this)}
-                    initialListSize={1}
-	         />
+				  <Text>hello world.</Text>
 			  </View>
 			);
 	  }

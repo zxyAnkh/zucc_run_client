@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-class AwesomeProject extends Component {
+export default class AwesomeProject extends Component {
   render() {
     return (
       <View style={styles.container}>
