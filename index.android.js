@@ -37,6 +37,8 @@ var AwesomeProject = React.createClass({
         return <HomeView navigator={nav}/>;
       case 'setting':
         return <SettingView navigator={nav}/>;
+      case 'login':
+        return <SignInView navigator={nav}/>;
       default:
         return (<SignInView navigator={nav}/>);
     }

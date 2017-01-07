@@ -43,8 +43,30 @@ export default class SettingView extends React.Component {
     })
   }
 
-  renderRow(rowData){
-    return (<Text>{rowData}</Text>);
+  onRowSelect(data){
+    if(data === "1"){
+        // navigator.push({id: modify});
+        return null;
+    }else if(data === "2"){
+        this.props.navigator.replace({id: 'login'});
+        console.log(this.props.navigator.getCurrentRoutes());
+        // delete login info...
+    }else{
+      return null;
+    }
+  }
+
+  renderRow(rowData, sectionID, rowID){
+    if(rowData === "账号名称"){
+      return (<Text>...等待从storage中获取</Text>);
+    }else{
+      return (<TouchableOpacity 
+                onPress={() => this.onRowSelect(rowID)}>
+                <View>
+                  <Text>{rowData}</Text>
+                </View>
+              </TouchableOpacity>);
+    }
   }
 
   onTabSelect(tab){
@@ -81,7 +103,7 @@ export default class SettingView extends React.Component {
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => this.renderRow(rowData)}
+          renderRow={this.renderRow.bind(this)}
         />
         <Tabbar show={true}
                 disable={false}

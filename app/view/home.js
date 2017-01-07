@@ -84,8 +84,9 @@ export default class HomeView extends React.Component {
     })
   }
 
-  renderRow(rowData){
-    return (<Text>学号:{rowData.userno}  姓名:{rowData.username}{'\n'}
+  renderRow(rowData, sectionID, rowID){
+    var id = parseInt(rowID)+1;
+    return (<Text>编号:{id}  学号:{rowData.userno}  姓名:{rowData.username}{'\n'}
       开始时间:{rowData.starttime}  结束时间:{rowData.endtime}
       </Text>);
   }
@@ -132,7 +133,7 @@ export default class HomeView extends React.Component {
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => this.renderRow(rowData)}
+          renderRow={this.renderRow.bind(this)}
         />
         <Tabbar show={true}
                 disable={false}

@@ -34,7 +34,7 @@ export default class SignInView extends React.Component{
   }
 
   componentDidMount(){
-
+    
   }
 
   componentWillUnMount(){
