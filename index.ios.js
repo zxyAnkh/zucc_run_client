@@ -11,6 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
+import * as Storage from './app/common/storage';
 
 export default class AwesomeProject extends Component {
   render() {

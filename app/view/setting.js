@@ -14,9 +14,8 @@ import {
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
-// import TabbarView from './tabs';
 
-export default class HomeView extends React.Component {
+export default class SettingView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,64 +33,18 @@ export default class HomeView extends React.Component {
 
   // get data from server
   _fetchData() {
-    var data = [{
-      uid: 9,
-      rid: 4,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 842,
-      starttime: 'Jul 4, 2016 9:28:45 PM',
-      endtime: 'Jul 4, 2016 9:42:47 PM'
-    }, {
-      uid: 9,
-      rid: 8,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 1563,
-      starttime: 'Jul 7, 2016 11:19:47 AM',
-      endtime: 'Jul 7, 2016 11:45:50 AM'
-    }, {
-      uid: 9,
-      rid: 10,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000.95,
-      time: 1020,
-      starttime: 'Dec 3, 2016 4:00:00 PM',
-      endtime: 'Dec 3, 2016 4:17:00 PM'
-    }, {
-      uid: 9,
-      rid: 11,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 725,
-      starttime: 'Dec 4, 2016 2:39:00 PM',
-      endtime: 'Dec 4, 2016 2:51:05 PM'
-    }];
+    var data = [
+      "账号名称",
+      "修改密码",
+      "退出登录"
+    ];
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(data),
     })
   }
 
   renderRow(rowData){
-    return (<Text>学号:{rowData.userno}  姓名:{rowData.username}{'\n'}
-      开始时间:{rowData.starttime}  结束时间:{rowData.endtime}
-      </Text>);
-  }
-
-  startRun(){
-    return alert("开始跑步.");
+    return (<Text>{rowData}</Text>);
   }
 
   onTabSelect(tab){
@@ -104,7 +57,7 @@ export default class HomeView extends React.Component {
 
   renderTabs(){
     return (
-      <View style={{ flex: 1, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'blue' }}>
+        <View style={{ flex: 1, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'blue' }}>
         <TouchableOpacity style={styles.tabItem} onPress={() => this.onTabSelect('home')}>
           <View>
             <Text>首页</Text>
@@ -123,11 +76,7 @@ export default class HomeView extends React.Component {
     return (
       <View style={{ flex: 1, }}>
         <NavigationBar
-          title={{title:'跑步记录'}}
-          rightButton={{      
-            title: '+',
-            handler: () => this.startRun(),
-          }}
+          title={{title:'个人设置'}}
           style={styles.topNav}
         />
         <ListView

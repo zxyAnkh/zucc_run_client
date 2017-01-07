@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import constants from '../common/constants';
 import {auth} from '../service/userService';
+import * as Storage from '../common/storage';
 
 export default class SignInView extends React.Component{
 
@@ -57,18 +58,20 @@ export default class SignInView extends React.Component{
 
     if(no.length === 8 && pwd !== ""){
       // auth...
-      InteractionManager.runAfterInteractions(() => {
-        let result = auth(no, pwd);
-        console.log(result);
-        if(result === true){
-          this.props.navigator.push({id: 'home'});
+      auth(no, pwd);
+      setTimeout(() => {
+        // let logined = Storage.get("loginstate").state;
+        // console.log(logined);
+        var logined = true;
+        if(logined){
+          this.props.navigator.replace({id: 'home'});
           this.state.logined = true;
         }
         else{
           ToastAndroid.show('not correct student number or password.', ToastAndroid.SHORT);
           this.state.startLogin = false;
         }
-      });
+      }, 3000);
     }
     return;
   }

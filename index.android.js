@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SignInView from './app/view/signin';
 import HomeView from './app/view/home';
 import HeadView from './app/view/head';
+import SettingView from './app/view/setting';
 import {
   AppRegistry,
   StyleSheet,
@@ -10,6 +11,8 @@ import {
   TextInput,
   Navigator
 } from 'react-native';
+import * as Storage from './app/common/storage';
+
 
 var AwesomeProject = React.createClass({
   render() {
@@ -32,6 +35,8 @@ var AwesomeProject = React.createClass({
     switch(route.id){
       case 'home':
         return <HomeView navigator={nav}/>;
+      case 'setting':
+        return <SettingView navigator={nav}/>;
       default:
         return (<SignInView navigator={nav}/>);
     }
