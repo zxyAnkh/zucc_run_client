@@ -3,6 +3,8 @@ import SignInView from './app/view/signin';
 import HomeView from './app/view/home';
 import HeadView from './app/view/head';
 import SettingView from './app/view/setting';
+import ModifyPwdView from './app/view/modifypwd';
+import RunningView from './app/view/run';
 import {
   AppRegistry,
   StyleSheet,
@@ -39,6 +41,10 @@ var AwesomeProject = React.createClass({
         return <SettingView navigator={nav}/>;
       case 'login':
         return <SignInView navigator={nav}/>;
+      case 'modifypwd':
+        return <ModifyPwdView navigator={nav}/>;
+      case 'running':
+        return <RunningView navigator={nav}/>;
       default:
         return (<SignInView navigator={nav}/>);
     }

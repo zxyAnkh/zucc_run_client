@@ -86,34 +86,40 @@ export default class HomeView extends React.Component {
 
   renderRow(rowData, sectionID, rowID){
     var id = parseInt(rowID)+1;
-    return (<Text>编号:{id}  学号:{rowData.userno}  姓名:{rowData.username}{'\n'}
-      开始时间:{rowData.starttime}  结束时间:{rowData.endtime}
-      </Text>);
+    var stime = this.handleTimeFormat(new Date(rowData.starttime));
+    var etime = this.handleTimeFormat(new Date(rowData.endtime));
+    return (<Text>#{id}{'\n'}开始时间:{stime}{'\n'}结束时间:{etime}</Text>);
+  }
+
+  handleTimeFormat(time){
+      var t = time.toISOString();
+      var ret = t.substr(0,10)+" "+t.substr(11,8);
+      return ret;
   }
 
   startRun(){
-    return alert("开始跑步.");
+    this.props.navigator.push({id: 'running'});
   }
 
   onTabSelect(tab){
     if(tab === 'home'){
-      this.props.navigator.push({id: 'home'});
+      this.props.navigator.replace({id: 'home'});
     }else if(tab === 'setting'){
-      this.props.navigator.push({id: 'setting'});
+      this.props.navigator.replace({id: 'setting'});
     }
   }
 
   renderTabs(){
     return (
-      <View style={{ flex: 1, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'blue' }}>
+      <View style={styles.tabbar}>
         <TouchableOpacity style={styles.tabItem} onPress={() => this.onTabSelect('home')}>
           <View>
-            <Text>首页</Text>
+            <Text style={{color:'#fff'}}>首页</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabItem}  onPress={() => this.onTabSelect('setting')}>
           <View>
-            <Text>设置</Text>
+            <Text style={{color:'#fff'}}>设置</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -122,7 +128,7 @@ export default class HomeView extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, }}>
+      <View style={styles.container}>
         <NavigationBar
           title={{title:'跑步记录'}}
           rightButton={{      
@@ -134,11 +140,12 @@ export default class HomeView extends React.Component {
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
+          style={styles.listContainer}
         />
         <Tabbar show={true}
                 disable={false}
                 ref={(ref) => this.tabarRef = ref}
-                style={{ backgroundColor: 'green' }}>
+                style={{backgroundColor: '#0379d5'}}>
           {this.renderTabs()}
         </Tabbar>
       </View>
@@ -147,9 +154,26 @@ export default class HomeView extends React.Component {
 }
 
 var styles = StyleSheet.create({
+  container:{
+    flex: 1,
+  },
+  listContainer: {
+    flexDirection: 'row',
+    height: 48,
+  },
+  tabbar: {
+    flex: 1, 
+    flexDirection: 'row', 
+    borderTopWidth: 1, 
+    borderTopColor: '#0379d5', 
+    borderRightWidth: 1, 
+    borderRightColor: '#0379d5', 
+    borderLeftWidth: 1, 
+    borderLeftColor: '#0379d5'
+  },
   tabItem:{
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   }
 })

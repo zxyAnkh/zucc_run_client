@@ -64,8 +64,8 @@ export default class SignInView extends React.Component{
         // console.log(logined);
         var logined = true;
         if(logined){
-          this.props.navigator.replace({id: 'home'});
           this.state.logined = true;
+          this.props.navigator.replace({id: 'home'});
         }
         else{
           ToastAndroid.show('not correct student number or password.', ToastAndroid.SHORT);

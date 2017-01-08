@@ -45,11 +45,9 @@ export default class SettingView extends React.Component {
 
   onRowSelect(data){
     if(data === "1"){
-        // navigator.push({id: modify});
-        return null;
+        this.props.navigator.push({id: 'modifypwd'});
     }else if(data === "2"){
         this.props.navigator.replace({id: 'login'});
-        console.log(this.props.navigator.getCurrentRoutes());
         // delete login info...
     }else{
       return null;
@@ -71,23 +69,23 @@ export default class SettingView extends React.Component {
 
   onTabSelect(tab){
     if(tab === 'home'){
-      this.props.navigator.push({id: 'home'});
+      this.props.navigator.replace({id: 'home'});
     }else if(tab === 'setting'){
-      this.props.navigator.push({id: 'setting'});
+      this.props.navigator.replace({id: 'setting'});
     }
   }
 
   renderTabs(){
     return (
-        <View style={{ flex: 1, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'blue' }}>
+        <View style={styles.tabbar}>
         <TouchableOpacity style={styles.tabItem} onPress={() => this.onTabSelect('home')}>
           <View>
-            <Text>首页</Text>
+            <Text style={{color:'#fff'}}>首页</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabItem}  onPress={() => this.onTabSelect('setting')}>
           <View>
-            <Text>设置</Text>
+            <Text style={{color:'#fff'}}>设置</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -108,7 +106,7 @@ export default class SettingView extends React.Component {
         <Tabbar show={true}
                 disable={false}
                 ref={(ref) => this.tabarRef = ref}
-                style={{ backgroundColor: 'green' }}>
+                style={{ backgroundColor: 'white' }}>
           {this.renderTabs()}
         </Tabbar>
       </View>
@@ -117,9 +115,19 @@ export default class SettingView extends React.Component {
 }
 
 var styles = StyleSheet.create({
+  tabbar: {
+    flex: 1, 
+    flexDirection: 'row', 
+    borderTopWidth: 1, 
+    borderTopColor: '#0379d5', 
+    borderRightWidth: 1, 
+    borderRightColor: '#0379d5', 
+    borderLeftWidth: 1, 
+    borderLeftColor: '#0379d5'
+  },
   tabItem:{
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   }
 })
