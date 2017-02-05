@@ -15,7 +15,7 @@ import AMapLocation from 'react-native-smart-amap-location';
 import Button from 'react-native-smart-button';
 import AppEventListenerEnhance from 'react-native-smart-app-event-listener-enhance';
 
-export default class AMapLocationDemo extends Component {
+class AMapLocationDemo extends Component {
 
     // 构造
     constructor(props) {
@@ -64,6 +64,7 @@ export default class AMapLocationDemo extends Component {
     _onLocationResult = (result) => {
         if(result.error) {
             Alert.alert(`错误代码: ${result.error.code}, 错误信息: ${result.error.localizedDescription}`);
+            console.log(result.error.localizedDescription);
         }
         else {
             if(result.formattedAddress) {
@@ -88,3 +89,5 @@ export default class AMapLocationDemo extends Component {
     }
 
 }
+
+export default AppEventListenerEnhance(AMapLocationDemo)
