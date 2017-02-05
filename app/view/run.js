@@ -9,7 +9,12 @@ import{
 	Text,
 	View,
 	TouchableOpacity,
-	TouchableHighlight
+	TouchableHighlight,
+	Alert,
+    NativeAppEventEmitter,
+    ActivityIndicator,
+    ActivityIndicatorIOS,
+    ProgressBarAndroid,
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 
@@ -27,13 +32,12 @@ export default class RunningView extends React.Component{
 	}
 
   	componentDidMount() {
-
   	}
 
   	componentWillUnMount() {
   		this.stop();
   	}
-
+    
   	start(){
   		if(!this.state.stoped){
 	  		this.setState({
@@ -44,7 +48,8 @@ export default class RunningView extends React.Component{
 		    let interval = setInterval(
 		        () => { 
 		          this.setState({
-		            currentTime: (new Date()).getTime()
+		            currentTime: (new Date()).getTime(),
+		            location: loction,
 		          })
 		          countingTime = this.state.currentTime - this.state.initialTime;
 		          minute = Math.floor(countingTime/(60*1000));

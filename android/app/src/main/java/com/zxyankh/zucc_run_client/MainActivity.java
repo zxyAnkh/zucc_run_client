@@ -1,4 +1,4 @@
-package com.awesomeproject;
+package com.zxyankh.zucc_run_client;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "AwesomeProject";
+        return "ZUCC_run_client";
     }
 }

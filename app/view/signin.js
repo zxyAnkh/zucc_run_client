@@ -12,7 +12,6 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  AsyncStorage,
   ToastAndroid,
   InteractionManager
 } from 'react-native';
@@ -34,7 +33,15 @@ export default class SignInView extends React.Component{
   }
 
   componentDidMount(){
-    
+    // Storage.clear();
+    // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+    // Storage.remove('loginstate');
+    // Storage.set('user', {'no': "31301100", 'password': "123"}, 1000 * 3600 * 24 * 7);
+    Storage.get('loginstate').then(ret => {
+      if(ret.state === true){
+        this.props.navigator.replace({id: 'home'});
+      }
+    })
   }
 
   componentWillUnMount(){
@@ -44,34 +51,40 @@ export default class SignInView extends React.Component{
   _doSignIn(){
     let {no, pwd, startLogin, logined} = this.state;
 
-    AsyncStorage.clear();
     this.state.startLogin = true;
 
     if(!no.length || no.length !== 8){
-      ToastAndroid.show('not correct student number.', ToastAndroid.SHORT);
+      ToastAndroid.show('学号错误.', ToastAndroid.SHORT);
       return;
     }
     if(!pwd.length){
-      ToastAndroid.show('not correct password.', ToastAndroid.SHORT);
+      ToastAndroid.show('密码错误.', ToastAndroid.SHORT);
       return;
     }
 
     if(no.length === 8 && pwd !== ""){
-      // auth...
-      auth(no, pwd);
-      setTimeout(() => {
-        // let logined = Storage.get("loginstate").state;
-        // console.log(logined);
-        var logined = true;
-        if(logined){
-          this.state.logined = true;
-          this.props.navigator.replace({id: 'home'});
-        }
-        else{
-          ToastAndroid.show('not correct student number or password.', ToastAndroid.SHORT);
+      ToastAndroid.show('登录中，请稍候.', ToastAndroid.SHORT);
+      Storage.get('loginstate')
+        .then(ret => {
+          if(ret.state === true){
+            this.state.logined = true;
+            this.props.navigator.replace({id: 'home'});
+          }else{
+            var loginedstate = auth(no, pwd);
+            if(loginedstate){
+              Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+              Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+              this.state.logined = true;
+              this.props.navigator.replace({id: 'home'});
+            }else{
+              ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
+              this.state.startLogin = false;
+            }
+          }
+        }).catch(err => {
+          ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
           this.state.startLogin = false;
-        }
-      }, 3000);
+      });
     }
     return;
   }
@@ -94,7 +107,7 @@ export default class SignInView extends React.Component{
           <TextInput
             ref="no"
             style={styles.inputs}
-            placeholder="please input your student number"
+            placeholder="请输入学号"
             keyboardType="default"
             clearButtonMode="while-editing"
             returnKeyType="next"
@@ -106,7 +119,7 @@ export default class SignInView extends React.Component{
             style={styles.inputs}
             password="true"
             secureTextEntry={true}
-            placeholder="please input your password"
+            placeholder="请输入密码"
             clearButtonMode="while-editing"
             returnKeyType="done"
             onChangeText={this._onChangePassword.bind(this)}
@@ -115,7 +128,7 @@ export default class SignInView extends React.Component{
         <View style={styles.buttonGroup}>
           <TouchableOpacity onPress={this._doSignIn.bind(this)}>
             <View style={styles.Login}>
-              <Text style={styles.LoginText}>Sign in</Text>
+              <Text style={styles.LoginText}>登录</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -166,7 +179,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#0379d5',
   },
   LoginText: {
-    marginTop: 10,
+    marginTop: 8,
     fontSize: 16,
     color: '#fff',
   },

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import * as Storage from './app/common/storage';
 
-export default class AwesomeProject extends Component {
+export default class ZUCC_run_client extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('ZUCC_run_client', () => ZUCC_run_client);

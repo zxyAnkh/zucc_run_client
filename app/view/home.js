@@ -98,7 +98,7 @@ export default class HomeView extends React.Component {
   }
 
   startRun(){
-    this.props.navigator.push({id: 'running'});
+    this.props.navigator.push({id: 'demo'});
   }
 
   onTabSelect(tab){

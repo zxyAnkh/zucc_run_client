@@ -106,7 +106,7 @@ export default class SettingView extends React.Component {
         <Tabbar show={true}
                 disable={false}
                 ref={(ref) => this.tabarRef = ref}
-                style={{ backgroundColor: 'white' }}>
+                style={{ backgroundColor: '#0379d5' }}>
           {this.renderTabs()}
         </Tabbar>
       </View>

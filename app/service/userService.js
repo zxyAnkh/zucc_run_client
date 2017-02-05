@@ -6,8 +6,8 @@
 import async from 'async';
 import * as urls from '../common/urls';
 import * as types from '../common/types';
-import * as Storage from '../common/storage';
 import Util from '../common/utils';
+import * as Storage from '../common/storage';
 import {
 	AsyncStorage
 } from 'react-native';
@@ -30,13 +30,6 @@ export let auth = (no, pwd) => {
 	// return (
 	// 	Util.postform(url, data, (responseJson) => {
 	// 		if (responseJson.logined === true) {
-	// 			let user = {};
-	// 			user.no = no;
-	// 			user.pwd = pwd;
-	// 			Storage.set("loginstate", {
-	// 				"state": true
-	// 			});
-	// 			Storage.set("user", user);
 	// 			return true;
 	// 		}
 	// 		return false;
@@ -46,3 +39,22 @@ export let auth = (no, pwd) => {
 	// 	})
 	// );
 };
+
+export let update = (no, pwd) => {
+	let url = urls.urlUpdate;
+	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
+	// form data = userno=?&password=?
+	return no === '31301100' && pwd === '111' ? true : false;
+
+	// return (
+	// 	Util.postform(url, data, (responseJson) => {
+	// 		if (responseJson.logined === true) {
+	// 			return true;
+	// 		}
+	// 		return false;
+	// 	}, (err) => {
+	// 		console.log(err);
+	// 		return false;
+	// 	})
+	// );
+}

@@ -5,6 +5,8 @@ import HeadView from './app/view/head';
 import SettingView from './app/view/setting';
 import ModifyPwdView from './app/view/modifypwd';
 import RunningView from './app/view/run';
+import AMapLocationDemo from './app/view/mapdemo';
+import * as Storage from './app/common/storage';
 import {
   AppRegistry,
   StyleSheet,
@@ -13,10 +15,8 @@ import {
   TextInput,
   Navigator
 } from 'react-native';
-import * as Storage from './app/common/storage';
 
-
-var AwesomeProject = React.createClass({
+var ZUCC_run_client = React.createClass({
   render() {
     return (
       <View style={styles.container}>
@@ -27,9 +27,10 @@ var AwesomeProject = React.createClass({
   }
 });
 
-var AwesomeProject = React.createClass({
+var ZUCC_run_client = React.createClass({
 
   getInitialState: function(){
+    // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
     return {logined:false};
   },
 
@@ -45,6 +46,8 @@ var AwesomeProject = React.createClass({
         return <ModifyPwdView navigator={nav}/>;
       case 'running':
         return <RunningView navigator={nav}/>;
+      case 'demo':
+        return <AMapLocationDemo navigator={nav}/>;
       default:
         return (<SignInView navigator={nav}/>);
     }
@@ -76,4 +79,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('ZUCC_run_client', () => ZUCC_run_client);

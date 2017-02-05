@@ -1,3 +1,5 @@
-rootProject.name = 'AwesomeProject'
+rootProject.name = 'ZUCC_run_client'
+include ':react-native-smart-amap-location'
+project(':react-native-smart-amap-location').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-smart-amap-location/android')
 
 include ':app'

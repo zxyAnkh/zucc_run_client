@@ -11,17 +11,28 @@ import {
   TextInput,
   ListView,
   TouchableOpacity,
+  ToastAndroid,
   Animated
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
+import * as Storage from '../common/storage';
+import {update} from '../service/userService';
 
 export default class ModifyPwdView extends React.Component{
-	constructor(props){
-		super(props);
-	}
+  	constructor(props){
+  		super(props);
+      this.state = {
+        no: '',
+        oldpwd: '',
+        newpwd1: '',
+        newpwd2: ''
+      };
+  	}
 
   	componentDidMount() {
-    	
+    	Storage.get('user').then(ret => {
+        this.state.no = ret.no;
+      })
   	}
 
   	componentWillUnMount() {
@@ -33,8 +44,32 @@ export default class ModifyPwdView extends React.Component{
   	}
 
   	modify(){
-  		this.props.navigator.pop();
+      let {no, oldpwd, newpwd1, newpwd2} = this.state;
+      if(newpwd1 === newpwd2 && oldpwd !== newpwd1){
+        Storage.get('user').then(ret => {
+          if(ret.password === oldpwd){      
+            if(update(no, newpwd1)){
+              Storage.set('user', {'no': no, 'password': newpwd1}, 1000 * 3600 * 24 * 7);
+              Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+              ToastAndroid.show('修改成功，请重新登录.', ToastAndroid.SHORT);
+              this.props.navigator.replace({id: 'login'});
+            }
+          }
+        })
+      }
   	}
+
+  _onChangeOldPwd(text){
+    this.state.oldpwd = text;
+  }
+
+  _onChangeNewPwd1(text){
+    this.state.newpwd1 = text;
+  }
+
+  _onChangeNewPwd2(text){
+    this.state.newpwd2 = text;
+  }
 
   	render(){
   		return (
@@ -55,6 +90,7 @@ export default class ModifyPwdView extends React.Component{
 		            keyboardType="default"
 		            clearButtonMode="while-editing"
 		            returnKeyType="next"
+                onChangeText={this._onChangeOldPwd.bind(this)}
 		          />
 		          <View style={styles.line}></View>
 		          <TextInput
@@ -65,6 +101,7 @@ export default class ModifyPwdView extends React.Component{
 		            placeholder="please input your new password"
 		            clearButtonMode="while-editing"
 		            returnKeyType="done"
+                onChangeText={this._onChangeNewPwd1.bind(this)}
 		          />
 		          <View style={styles.line}></View>
 		          <TextInput
@@ -75,6 +112,7 @@ export default class ModifyPwdView extends React.Component{
 		            placeholder="please input your new password again"
 		            clearButtonMode="while-editing"
 		            returnKeyType="done"
+                onChangeText={this._onChangeNewPwd2.bind(this)}
 		          />
 		        </View>
 		        <View style={styles.buttonGroup}>
