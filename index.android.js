@@ -5,7 +5,7 @@ import HeadView from './app/view/head';
 import SettingView from './app/view/setting';
 import ModifyPwdView from './app/view/modifypwd';
 import RunningView from './app/view/run';
-import AMapLocationDemo from './app/view/mapdemo';
+// import AMapLocationDemo from './app/view/mapdemo';
 import * as Storage from './app/common/storage';
 import {
   AppRegistry,
@@ -16,7 +16,7 @@ import {
   Navigator
 } from 'react-native';
 
-var ZUCC_run_client = React.createClass({
+var zuccrun = React.createClass({
   render() {
     return (
       <View style={styles.container}>
@@ -27,7 +27,7 @@ var ZUCC_run_client = React.createClass({
   }
 });
 
-var ZUCC_run_client = React.createClass({
+var zuccrun = React.createClass({
 
   getInitialState: function(){
     // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
@@ -79,4 +79,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('ZUCC_run_client', () => ZUCC_run_client);
+AppRegistry.registerComponent('zuccrun', () => zuccrun);

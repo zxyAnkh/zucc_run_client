@@ -38,7 +38,7 @@ class AMapLocationDemo extends Component {
 
     componentWillUnmount () {
         //停止并销毁定位服务
-        AMapLocation.cleanUp()
+        AMapLocation.clearUp();
     }
 
     render() {

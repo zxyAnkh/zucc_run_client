@@ -14,17 +14,25 @@ import {
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
+import * as Storage from '../common/storage';
 
 export default class SettingView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      no: '',
+      name: '',
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     };
   }
 
   componentDidMount() {
     this._fetchData();
+    Storage.get('user').then(ret => {
+      this.setState({
+        no: ret.no,
+      })
+    })
   }
 
   componentWillUnMount() {
@@ -47,6 +55,8 @@ export default class SettingView extends React.Component {
     if(data === "1"){
         this.props.navigator.push({id: 'modifypwd'});
     }else if(data === "2"){
+        Storage.remove('loginstate');
+        Storage.remove('user');
         this.props.navigator.replace({id: 'login'});
         // delete login info...
     }else{
@@ -56,7 +66,9 @@ export default class SettingView extends React.Component {
 
   renderRow(rowData, sectionID, rowID){
     if(rowData === "账号名称"){
-      return (<Text>...等待从storage中获取</Text>);
+      var userno = this.state.no;
+      console.log(userno);
+      return (<Text>学号：{userno}</Text>);
     }else{
       return (<TouchableOpacity 
                 onPress={() => this.onRowSelect(rowID)}>

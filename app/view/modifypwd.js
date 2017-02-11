@@ -31,8 +31,10 @@ export default class ModifyPwdView extends React.Component{
 
   	componentDidMount() {
     	Storage.get('user').then(ret => {
-        this.state.no = ret.no;
-      })
+        this.setState({
+          no: ret.no
+        })
+      });
   	}
 
   	componentWillUnMount() {
