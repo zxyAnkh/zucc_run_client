@@ -4,7 +4,6 @@ import HomeView from './app/view/home';
 import SettingView from './app/view/setting';
 import ModifyPwdView from './app/view/modifypwd';
 import RunningView from './app/view/run';
-import AMapLocationDemo from './app/view/mapdemo';
 import * as Storage from './app/common/storage';
 import {
   AppRegistry,
@@ -44,8 +43,6 @@ var zuccrun = React.createClass({
         return <ModifyPwdView navigator={nav}/>;
       case 'running':
         return <RunningView navigator={nav}/>;
-      case 'demo':
-        return <AMapLocationDemo navigator={nav}/>;
       default:
         return (<SignInView navigator={nav}/>);
     }

@@ -10,7 +10,7 @@ var async = require('async');
 var storage = new Storage({
 	size: 1000,
 	storageBackend: AsyncStorage,
-	defaultExpires: 1000*3600*24*7,
+	defaultExpires: 1000*3600*24*31,
 	enableCache: true,
 	sync:{
 		

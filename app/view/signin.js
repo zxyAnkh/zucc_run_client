@@ -70,20 +70,22 @@ export default class SignInView extends React.Component{
             this.state.logined = true;
             this.props.navigator.replace({id: 'home'});
           }else{
-            var loginedstate = auth(no, pwd);
-            if(loginedstate){
-              Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-              Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
-              this.state.logined = true;
-              this.props.navigator.replace({id: 'home'});
-            }else{
-              ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
-              this.state.startLogin = false;
+            auth(no, pwd).
+              then(ret => {
+                if(ret.result === true){
+                  Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+                  Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+                  this.state.logined = true;
+                  this.props.navigator.replace({id: 'home'});
+                }else{
+                  ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
+                  this.state.startLogin = false;
+                }
+              }).catch(err => {
+                ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
+                this.state.startLogin = false;
+              });
             }
-          }
-        }).catch(err => {
-          ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
-          this.state.startLogin = false;
       });
     }
     return;

@@ -9,9 +9,6 @@ import * as types from '../common/types';
 import Util from '../common/utils';
 import * as Storage from '../common/storage';
 import {
-	AsyncStorage
-} from 'react-native';
-import {
 	ToastAndroid,
 } from 'react-native';
 
@@ -30,12 +27,12 @@ export let auth = (no, pwd) => {
 	// return (
 	// 	Util.postform(url, data, (responseJson) => {
 	// 		if (responseJson.logined === true) {
-	// 			return true;
+	// 			return {'result': true};
 	// 		}
-	// 		return false;
+	// 		return {'result': false};
 	// 	}, (err) => {
 	// 		console.log(err);
-	// 		return false;
+	// 		return {'result': false};
 	// 	})
 	// );
 };
@@ -49,12 +46,33 @@ export let update = (no, pwd) => {
 	// return (
 	// 	Util.postform(url, data, (responseJson) => {
 	// 		if (responseJson.logined === true) {
-	// 			return true;
+	// 			return {'result': true};
 	// 		}
-	// 		return false;
+	// 		return {'result': false};
 	// 	}, (err) => {
 	// 		console.log(err);
-	// 		return false;
+	// 		return {'result': false};
 	// 	})
 	// );
+}
+
+export let addrun = (no, meter, stime, etime) => {
+	let url = urls.urlAddRun;
+	let data = 'sno=' + no.toString() + '&meter=' + meter.toString() + '&stime=' + stime.toString() + '&etime=' + etime.toString();
+
+	return (Util.postform(url, data, (responseJson) => {
+		if(responseJson === 'SUCCEEDED'){
+			// 更新存储的内容
+			Storage.get('rundata')
+				.then(ret => {
+					
+				})
+			return {'result': true};
+		}
+		return {'result': false};
+		}, (err) => {
+			console.log(err);
+			return {'result': false};
+		})
+	);
 }

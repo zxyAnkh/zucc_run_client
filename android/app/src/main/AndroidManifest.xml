@@ -25,7 +25,7 @@
       android:name=".MainApplication"
       android:allowBackup="true"
       android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
+      android:icon="@mipmap/logo"
       android:theme="@style/AppTheme">
         <!--高德地图SDK key设置-->
         <meta-data

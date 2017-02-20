@@ -12,7 +12,9 @@ import {
   ListView,
   TouchableOpacity,
   ToastAndroid,
-  Animated
+  Animated,
+  BackAndroid,
+  Platform
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import * as Storage from '../common/storage';
@@ -35,10 +37,19 @@ export default class ModifyPwdView extends React.Component{
           no: ret.no
         })
       });
+      if(Platform.OS === 'android'){
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+          this.backToSetting();
+          return true;
+        })
+      }
   	}
 
   	componentWillUnMount() {
-
+      if (Platform.OS === 'android') {  
+        BackAndroid.removeEventListener('hardwareBackPress', () => {  
+        });  
+      } 
   	}
 
   	backToSetting(){
