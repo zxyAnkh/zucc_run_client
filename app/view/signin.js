@@ -36,12 +36,12 @@ export default class SignInView extends React.Component{
     // Storage.clear();
     // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
     // Storage.remove('loginstate');
-    Storage.set('user', {'no': "31301100", 'password': "123"}, 1000 * 3600 * 24 * 7);
+    // Storage.set('user', {'no': "31301100", 'password': "123"}, 1000 * 3600 * 24 * 7);
     Storage.get('loginstate').then(ret => {
       if(ret.state === true){
         this.props.navigator.replace({id: 'home'});
       }
-    })
+    }).catch(err => {});
   }
 
   componentWillUnMount(){
@@ -70,22 +70,19 @@ export default class SignInView extends React.Component{
             this.state.logined = true;
             this.props.navigator.replace({id: 'home'});
           }else{
-            auth(no, pwd).
-              then(ret => {
-                if(ret.result === true){
-                  Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-                  Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
-                  this.state.logined = true;
-                  this.props.navigator.replace({id: 'home'});
-                }else{
-                  ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
-                  this.state.startLogin = false;
-                }
-              }).catch(err => {
+            let logret = auth(no, pwd);
+            // auth(no, pwd).then(logret => {
+              if(logret.result === true){
+                Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+                Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+                this.state.logined = true;
+                this.props.navigator.replace({id: 'home'});
+              }else{
                 ToastAndroid.show('学号或密码错误.', ToastAndroid.SHORT);
                 this.state.startLogin = false;
-              });
-            }
+              }
+            // });
+          }
       });
     }
     return;

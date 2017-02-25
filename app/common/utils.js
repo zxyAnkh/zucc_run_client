@@ -50,7 +50,7 @@ let Util = {
             })
             .catch((err) => {
                 failCallback(err);
-            });
+            }).done();
     },
 }
 

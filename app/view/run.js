@@ -20,6 +20,7 @@ import{
 } from 'react-native';
 import {addrun} from '../service/userService';
 import * as Storage from '../common/storage';
+import Distance from 'gps-distance';
 import NavigationBar from 'react-native-navbar';
 import AMapLocation from 'react-native-smart-amap-location'
 import AppEventListenerEnhance from 'react-native-smart-app-event-listener-enhance'
@@ -129,12 +130,13 @@ class RunningView extends React.Component{
             latitude = result.coordinate.latitude;
             longitude = result.coordinate.longitude;
         }
-        var [lastlatitude,lastlongitude, totalMeter, calc] = [this.state.latitude, this.state.longitude, this.state.totalMeter, this.state.calc];
-        var meter = Math.sqrt((lastlongitude-longitude)*(lastlongitude-longitude) + (lastlatitude-latitude)*(lastlatitude-latitude));
-        if(meter !== 0 && calc !== 0){
-	       	totalMeter += meter;
-        }
-        calc++;
+        let [lastlatitude,lastlongitude, totalMeter, calc] = [this.state.latitude, this.state.longitude, this.state.totalMeter, this.state.calc];
+		if(calc === 0){
+			[lastlatitude,lastlongitude] = [latitude, longitude];
+		}
+		calc++;
+        let meter = Distance(lastlatitude, lastlongitude, latitude, longitude);
+	    totalMeter += meter;
         this.setState({
             latitude,
             longitude,
