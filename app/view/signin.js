@@ -15,7 +15,6 @@ import {
   ToastAndroid,
   InteractionManager
 } from 'react-native';
-import constants from '../common/constants';
 import {auth} from '../service/userService';
 import * as Storage from '../common/storage';
 

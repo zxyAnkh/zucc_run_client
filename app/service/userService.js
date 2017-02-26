@@ -5,14 +5,13 @@
 
 import async from 'async';
 import * as urls from '../common/urls';
-import * as types from '../common/types';
 import Util from '../common/utils';
 import * as Storage from '../common/storage';
 import {
 	ToastAndroid,
 } from 'react-native';
 
-export auth = (no, pwd) => {
+export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
 	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
 	return (no === '31301100' && pwd === '123') ? JSON.parse('{"result": true}') : JSON.parse('{"result": false}');

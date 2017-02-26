@@ -36,6 +36,7 @@ class RunningView extends React.Component{
 			currentTime: 0,
 			minute: 0,
 			second: 0,
+			millsecond: 0,
 			totalMeter: 0,
 			latitude: null,
 			longitude: null,
@@ -44,17 +45,17 @@ class RunningView extends React.Component{
 	}
 
   	componentDidMount() {
-        this.addAppEventListener(
-            NativeAppEventEmitter.addListener('amap.location.onLocationResult', this._onLocationResult)
-        )
-        AMapLocation.init(null)
-        AMapLocation.setOptions({
-            allowsBackgroundLocationUpdates: true,
-            gpsFirst: false,
-            onceLocation: false,
-            onceLocationLatest: false,
-            interval: 1000,
-        })
+        // this.addAppEventListener(
+        //     NativeAppEventEmitter.addListener('amap.location.onLocationResult', this._onLocationResult)
+        // )
+        // AMapLocation.init(null)
+        // AMapLocation.setOptions({
+        //     allowsBackgroundLocationUpdates: true,
+        //     gpsFirst: false,
+        //     onceLocation: false,
+        //     onceLocationLatest: false,
+        //     interval: 1000,
+        // })
 	    if(Platform.OS === 'android'){
 	    	BackAndroid.addEventListener('hardwareBackPress', () => {
 	    		this.stop();
@@ -84,8 +85,8 @@ class RunningView extends React.Component{
 	  			started: true,
 	  			initialTime: (new Date()).getTime()
 	  		})
-	  		this.showLocation();
-	  		let second, minute, countingTime;
+	  		// this.showLocation();
+	  		let millsecond, second, minute, countingTime;
 	  		let cleaninterval = setInterval(() => {
 	  			if (this.state.stoped) {
 		            clearInterval(interval);
@@ -99,10 +100,16 @@ class RunningView extends React.Component{
 		          })
 		          countingTime = this.state.currentTime - this.state.initialTime;
 		          minute = Math.floor(countingTime/(60*1000));
-		          second = Math.floor((countingTime-6000*minute)/1000);
+		          second = Math.floor(countingTime/1000);
+		          millsecond = Math.floor(countingTime/100);
+		          if(second >= 60){
+		          	second %= 60;
+		          }
+		          console.log(countingTime, minute, second, millsecond);
 		          this.setState({
 		          	minute,
 		          	second,
+		          	millsecond,
 		          })
 		          if(this.state.totalMeter >= 2000){
 		          	// 传送数据至服务端
@@ -117,7 +124,7 @@ class RunningView extends React.Component{
 			                ToastAndroid.show('向服务端发送数据错误.', ToastAndroid.SHORT);
 			            });
 		          }
-		        },1000);
+		        },100);
   			}
   	}
 
@@ -157,6 +164,7 @@ class RunningView extends React.Component{
 			currentTime: 0,
 			minute: 0,
 			second: 0,
+			millsecond: 0,
 			totalMeter: 0,
 			latitude: null,
 			longitude: null,
@@ -171,11 +179,12 @@ class RunningView extends React.Component{
 	}
 
 	render(){
-		var [latitude,longitude] = [this.state.latitude, this.state.longitude];
+		let [latitude,longitude] = [this.state.latitude, this.state.longitude];
 		if(latitude===null || longitude===null){
 			latitude = 0;
 			longitude = 0;
 		}
+		let [minute, second, millsecond] = [this.state.minute, this.state.second, this.state.millsecond];
 		return (
   			<View style={{flex:1}}>
 	  			<NavigationBar
@@ -187,7 +196,7 @@ class RunningView extends React.Component{
 	          		style={styles.topNav}
         		/>
         		<View style={styles.faceContainer}>
-        			<Text style={styles.faceText}>{`00:${this.state.minute<10? "0"+this.state.minute:this.state.minute}:${this.state.second<10? "0"+this.state.second:this.state.second}`}</Text>
+        			<Text style={styles.faceText}>{`00:${minute<10? "0"+minute:minute}:${second<10? "0"+second:second}.${millsecond<10? "0"+millsecond:millsecond}`}</Text>
         			<Text style={styles.faceText}>{`${this.state.totalMeter}米`}</Text>
         			<Text style={styles.faceText}>{`纬度 = ${latitude}, 经度 = ${longitude}`}</Text>
         		</View>
