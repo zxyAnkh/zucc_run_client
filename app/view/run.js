@@ -112,15 +112,8 @@ class RunningView extends React.Component{
 		          })
 		          if(this.state.totalMeter >= 2000){
 		          	// 传送数据至服务端
-		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime).then(ret => {
-			          		if(ret.result === true){
-			          			ToastAndroid.show('跑步记录上传成功.', ToastAndroid.SHORT);
-			          		}else{
-			          			ToastAndroid.show('跑步记录上传失败.', ToastAndroid.SHORT);
-			          		}
-			          	}).catch(err => {
-			                ToastAndroid.show('向服务端发送数据错误.', ToastAndroid.SHORT);
-			            });
+		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime);
+		          	this.props.navigator.replace({id: 'home'});
 		          }
 		        },100);
   			}

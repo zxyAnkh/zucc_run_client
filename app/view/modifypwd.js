@@ -61,11 +61,24 @@ export default class ModifyPwdView extends React.Component{
       if(newpwd1 === newpwd2 && oldpwd !== newpwd1){
         Storage.get('user').then(ret => {
           if(ret.password === oldpwd){      
-            if(update(no, newpwd1)){
-              Storage.set('user', {'no': no, 'password': newpwd1}, 1000 * 3600 * 24 * 7);
-              Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+            update(no, newpwd1);
+            let time = 0;
+            let interval = setInterval(() => {
+              Storage.get('loginstate').then(logret => {
+                if(logret.state !== true){
+                  clearInterval(interval);
+                }
+                time++;
+                if(time >= 6){
+                  clearInterval(interval);
+                }
+              });
+            }, 500);
+            if(time < 6){
               ToastAndroid.show('修改成功，请重新登录.', ToastAndroid.SHORT);
-              this.props.navigator.replace({id: 'login'});
+              this.props.navigator.replace({id: 'login'});             
+            }else{
+              ToastAndroid.show('修改失败.', ToastAndroid.SHORT); 
             }
           }
         })

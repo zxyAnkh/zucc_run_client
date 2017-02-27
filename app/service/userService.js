@@ -14,55 +14,68 @@ import {
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
 	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
-	return (no === '31301100' && pwd === '123') ? JSON.parse('{"result": true}') : JSON.parse('{"result": false}');
+	if(no === '31301100' && pwd === '123'){
+		Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+		Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+	}
 
-	// return await Util.postform(url, data, (responseJson) => {
+	// Util.postform(url, data, (responseJson) => {
 	// 	if (responseJson.logined === true) {
-	// 		return JSON.parse('{"result": true}') ;
+	// 		Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+	// 		Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+	// 	}else{
+	// 		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+	// 		Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
 	// 	}
-	// 	return JSON.parse('{"result": false}');
 	// }, (err) => {
 	// 	console.log(err);
-	// 	return JSON.parse('{"result": false}');
-	// })
-	
+	// 	Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+	// 	Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+	// })	
 };
 
 export let update = (no, pwd) => {
 	let url = urls.urlUpdate;
 	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
-	return no === '31301100' && pwd === '111' ? JSON.parse('{"result": true}') : JSON.parse('{"result": false}');
-
-	// return (
-	// 	Util.postform(url, data, (responseJson) => {
-	// 		console.log(responseJson);
-	// 		if (responseJson.logined === true) {
-	// 			return JSON.parse('{"result": true}');
-	// 		}
-	// 		return JSON.parse('{"result": false}');
-	// 	}, (err) => {
-	// 		console.log(err);
-	// 		return JSON.parse('{"result": false}');
-	// 	})
-	// );
+	
+	Util.postform(url, data, (responseJson) => {
+		console.log(responseJson);
+		if (responseJson !== null && responseJson.logined === true) {
+            Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+            Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+		}
+	}, (err) => {
+		console.log(err);
+	})
 }
 
 export let addrun = (no, meter, stime, etime) => {
 	let url = urls.urlAddRun;
 	let data = 'sno=' + no.toString() + '&meter=' + meter.toString() + '&stime=' + stime.toString() + '&etime=' + etime.toString();
 
-	return (Util.postform(url, data, (responseJson) => {
-		if(responseJson === 'SUCCEEDED'){
-			// 更新存储的内容
+	Util.postform(url, data, (responseJson) => {
+		if(responseJson !== null && responseJson.result === true){
 			addRun2Storage(no, meter, stime, etime);
-			return JSON.parse('{"result": true}');
 		}
-		return JSON.parse('{"result": false}');
 		}, (err) => {
 			console.log(err);
-			return JSON.parse('{"result": false}');
-		})
-	);
+	})
+}
+
+export let loadrun = (no) => {
+	let url = urls.urlLoadRun + '?no=' + no.toString();
+
+	Util.get(url, (responseJson) => {
+		console.log(responseJson);
+		if(responseJson !== null && responseJson.data !== null){
+			Storage.remove('run');
+			for(let i = 0; i < responseJson.data.length; i++){
+				addRun2Storage(responseJson.data.sno, responseJson.data.meter, responseJson.data.stime, responseJson.data.etime);
+			}
+		}
+		}, (err) => {
+			console.log(err);
+	});
 }
 
 function addRun2Storage(no, meter, stime, etime){

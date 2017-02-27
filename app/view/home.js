@@ -13,6 +13,7 @@ import {
   Animated
 } from 'react-native';
 import * as Storage from '../common/storage';
+import {loadrun} from '../service/userService';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
 
@@ -20,37 +21,39 @@ export default class HomeView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      no: '',
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     };
   }
 
   componentDidMount() {
-    // Storage.set('run', {'data': [{
-    //     userno: '31301100',
-    //     meter: 2000,
-    //     time: 842,
-    //     starttime: 'Jul 4, 2016 9:28:45 PM',
-    //     endtime: 'Jul 4, 2016 9:42:47 PM'
-    //   }, {
-    //     userno: '31301100',
-    //     meter: 2000,
-    //     time: 1563,
-    //     starttime: 'Jul 7, 2016 11:19:47 AM',
-    //     endtime: 'Jul 7, 2016 11:45:50 AM'
-    //   }, {
-    //     userno: '31301100',
-    //     meter: 2000.95,
-    //     time: 1020,
-    //     starttime: 'Dec 3, 2016 4:00:00 PM',
-    //     endtime: 'Dec 3, 2016 4:17:00 PM'
-    //   }, {
-    //     userno: '31301100',
-    //     meter: 2000,
-    //     time: 725,
-    //     starttime: 'Dec 4, 2016 2:39:00 PM',
-    //     endtime: 'Dec 4, 2016 2:51:05 PM'
-    //   }]
-    // }, 1000 * 3600 * 24 * 31);
+    // Storage.clear('run');
+    Storage.set('run', {'data': [{
+     userno: '31301100',
+    meter: 2000,
+       time: 842,
+     starttime: 'Jul 4, 2016 9:28:45 PM',
+      endtime: 'Jul 4, 2016 9:42:47 PM'
+    }, {
+      userno: '31301100',
+      meter: 2000,
+      time: 1563,
+      starttime: 'Jul 7, 2016 11:19:47 AM',   
+      endtime: 'Jul 7, 2016 11:45:50 AM'   
+    }, {   
+      userno: '31301100',
+      meter: 2000.95,
+      time: 1020,
+      starttime: 'Dec 3, 2016 4:00:00 PM',
+      endtime: 'Dec 3, 2016 4:17:00 PM'
+    }, {
+      userno: '31301100',
+      meter: 2000,
+      time: 725,
+      starttime: 'Dec 4, 2016 2:39:00 PM',
+      endtime: 'Dec 4, 2016 2:51:05 PM'
+    }]
+  }, 1000 * 3600 * 24 * 31);
     this._fetchData();
   }
 
@@ -59,11 +62,18 @@ export default class HomeView extends React.Component {
 
   // get data from server
   _fetchData() {
+    Storage.get('user').then(ret => {
+      this.setState({
+        no: ret.no
+      });
+    });
     Storage.get("run").then(ret => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(ret.data),
       });
-    })
+    }).catch(err => {
+      loadrun(this.state.no);
+    });
   }
 
   renderRow(rowData, sectionID, rowID){
