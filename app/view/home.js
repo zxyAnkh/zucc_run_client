@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Animated
 } from 'react-native';
+import * as Storage from '../common/storage';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
 
@@ -24,6 +25,32 @@ export default class HomeView extends React.Component {
   }
 
   componentDidMount() {
+    // Storage.set('run', {'data': [{
+    //     userno: '31301100',
+    //     meter: 2000,
+    //     time: 842,
+    //     starttime: 'Jul 4, 2016 9:28:45 PM',
+    //     endtime: 'Jul 4, 2016 9:42:47 PM'
+    //   }, {
+    //     userno: '31301100',
+    //     meter: 2000,
+    //     time: 1563,
+    //     starttime: 'Jul 7, 2016 11:19:47 AM',
+    //     endtime: 'Jul 7, 2016 11:45:50 AM'
+    //   }, {
+    //     userno: '31301100',
+    //     meter: 2000.95,
+    //     time: 1020,
+    //     starttime: 'Dec 3, 2016 4:00:00 PM',
+    //     endtime: 'Dec 3, 2016 4:17:00 PM'
+    //   }, {
+    //     userno: '31301100',
+    //     meter: 2000,
+    //     time: 725,
+    //     starttime: 'Dec 4, 2016 2:39:00 PM',
+    //     endtime: 'Dec 4, 2016 2:51:05 PM'
+    //   }]
+    // }, 1000 * 3600 * 24 * 31);
     this._fetchData();
   }
 
@@ -32,53 +59,10 @@ export default class HomeView extends React.Component {
 
   // get data from server
   _fetchData() {
-    var data = [{
-      uid: 9,
-      rid: 4,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 842,
-      starttime: 'Jul 4, 2016 9:28:45 PM',
-      endtime: 'Jul 4, 2016 9:42:47 PM'
-    }, {
-      uid: 9,
-      rid: 8,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 1563,
-      starttime: 'Jul 7, 2016 11:19:47 AM',
-      endtime: 'Jul 7, 2016 11:45:50 AM'
-    }, {
-      uid: 9,
-      rid: 10,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000.95,
-      time: 1020,
-      starttime: 'Dec 3, 2016 4:00:00 PM',
-      endtime: 'Dec 3, 2016 4:17:00 PM'
-    }, {
-      uid: 9,
-      rid: 11,
-      userno: '31301100',
-      username: 'student1',
-      usergrade: 13,
-      userbranch: 1,
-      meter: 2000,
-      time: 725,
-      starttime: 'Dec 4, 2016 2:39:00 PM',
-      endtime: 'Dec 4, 2016 2:51:05 PM'
-    }];
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(data),
+    Storage.get("run").then(ret => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(ret.data),
+      });
     })
   }
 

@@ -45,17 +45,17 @@ class RunningView extends React.Component{
 	}
 
   	componentDidMount() {
-        // this.addAppEventListener(
-        //     NativeAppEventEmitter.addListener('amap.location.onLocationResult', this._onLocationResult)
-        // )
-        // AMapLocation.init(null)
-        // AMapLocation.setOptions({
-        //     allowsBackgroundLocationUpdates: true,
-        //     gpsFirst: false,
-        //     onceLocation: false,
-        //     onceLocationLatest: false,
-        //     interval: 1000,
-        // })
+        this.addAppEventListener(
+            NativeAppEventEmitter.addListener('amap.location.onLocationResult', this._onLocationResult)
+        )
+        AMapLocation.init(null)
+        AMapLocation.setOptions({
+            allowsBackgroundLocationUpdates: true,
+            gpsFirst: false,
+            onceLocation: false,
+            onceLocationLatest: false,
+            interval: 1000,
+        })
 	    if(Platform.OS === 'android'){
 	    	BackAndroid.addEventListener('hardwareBackPress', () => {
 	    		this.stop();
@@ -85,7 +85,7 @@ class RunningView extends React.Component{
 	  			started: true,
 	  			initialTime: (new Date()).getTime()
 	  		})
-	  		// this.showLocation();
+	  		this.showLocation();
 	  		let millsecond, second, minute, countingTime;
 	  		let cleaninterval = setInterval(() => {
 	  			if (this.state.stoped) {
@@ -105,7 +105,6 @@ class RunningView extends React.Component{
 		          if(second >= 60){
 		          	second %= 60;
 		          }
-		          console.log(countingTime, minute, second, millsecond);
 		          this.setState({
 		          	minute,
 		          	second,
@@ -113,8 +112,7 @@ class RunningView extends React.Component{
 		          })
 		          if(this.state.totalMeter >= 2000){
 		          	// 传送数据至服务端
-		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime)
-			          	.then(ret => {
+		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime).then(ret => {
 			          		if(ret.result === true){
 			          			ToastAndroid.show('跑步记录上传成功.', ToastAndroid.SHORT);
 			          		}else{
@@ -131,11 +129,15 @@ class RunningView extends React.Component{
   	_onLocationResult = (result) => {
   		let latitude, longitude;
         if(result.error) {
-            console.log(`错误代码: ${result.error.code}, 错误信息: ${result.error.localizedDescription}`);
+            Alert.alert("请打开网络与GPS定位！");
         }
         else {
-            latitude = result.coordinate.latitude;
-            longitude = result.coordinate.longitude;
+        	if(result.coordinate !== null){
+	            latitude = result.coordinate.latitude;
+	            longitude = result.coordinate.longitude;
+        	}else{
+        		Alert.alert("请打开网络与GPS定位！");
+        	}
         }
         let [lastlatitude,lastlongitude, totalMeter, calc] = [this.state.latitude, this.state.longitude, this.state.totalMeter, this.state.calc];
 		if(calc === 0){

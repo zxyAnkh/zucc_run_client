@@ -54,10 +54,7 @@ export let addrun = (no, meter, stime, etime) => {
 	return (Util.postform(url, data, (responseJson) => {
 		if(responseJson === 'SUCCEEDED'){
 			// 更新存储的内容
-			Storage.get('rundata')
-				.then(ret => {
-					
-				})
+			addRun2Storage(no, meter, stime, etime);
 			return JSON.parse('{"result": true}');
 		}
 		return JSON.parse('{"result": false}');
@@ -66,4 +63,24 @@ export let addrun = (no, meter, stime, etime) => {
 			return JSON.parse('{"result": false}');
 		})
 	);
+}
+
+function addRun2Storage(no, meter, stime, etime){
+	Storage.get("run").then(ret => {
+		let data = ret.data;
+		data.push({
+			userno: no,
+	        meter: meter,
+	        time: etime-stime,
+	        starttime: handleTimeFormat(stime),
+	        endtime: handleTimeFormat(etime)
+		});
+		Storage.set("run", data, 1000 * 3600 * 24 * 31);
+	});
+}
+
+function handleTimeFormat(time){
+  let t = time.toISOString();
+  let ret = t.substr(0,10)+" "+t.substr(11,8);
+  return ret;
 }
