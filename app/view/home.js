@@ -27,33 +27,38 @@ export default class HomeView extends React.Component {
   }
 
   componentDidMount() {
-    // Storage.clear('run');
-    Storage.set('run', {'data': [{
-     userno: '31301100',
-    meter: 2000,
-       time: 842,
-     starttime: 'Jul 4, 2016 9:28:45 PM',
-      endtime: 'Jul 4, 2016 9:42:47 PM'
-    }, {
-      userno: '31301100',
-      meter: 2000,
-      time: 1563,
-      starttime: 'Jul 7, 2016 11:19:47 AM',   
-      endtime: 'Jul 7, 2016 11:45:50 AM'   
-    }, {   
-      userno: '31301100',
-      meter: 2000.95,
-      time: 1020,
-      starttime: 'Dec 3, 2016 4:00:00 PM',
-      endtime: 'Dec 3, 2016 4:17:00 PM'
-    }, {
-      userno: '31301100',
-      meter: 2000,
-      time: 725,
-      starttime: 'Dec 4, 2016 2:39:00 PM',
-      endtime: 'Dec 4, 2016 2:51:05 PM'
-    }]
-  }, 1000 * 3600 * 24 * 31);
+    Storage.get('user').then(ret => {
+      this.setState({
+        no: ret.no
+      });
+    });
+    // Storage.remove('run');
+  //   Storage.set('run', {'data': [{
+  //    sno: '31301100',
+  //   meter: 2000,
+  //      time: 842,
+  //    stime: 'Jul 4, 2016 9:28:45 PM',
+  //     etime: 'Jul 4, 2016 9:42:47 PM'
+  //   }, {
+  //     sno: '31301100',
+  //     meter: 2000,
+  //     time: 1563,
+  //     stime: 'Jul 7, 2016 11:19:47 AM',   
+  //     etime: 'Jul 7, 2016 11:45:50 AM'   
+  //   }, {   
+  //     sno: '31301100',
+  //     meter: 2000.95,
+  //     time: 1020,
+  //     stime: 'Dec 3, 2016 4:00:00 PM',
+  //     etime: 'Dec 3, 2016 4:17:00 PM'
+  //   }, {
+  //     sno: '31301100',
+  //     meter: 2000,
+  //     time: 725,
+  //     stime: 'Dec 4, 2016 2:39:00 PM',
+  //     etime: 'Dec 4, 2016 2:51:05 PM'
+  //   }]
+  // }, 1000 * 3600 * 24 * 31);
     this._fetchData();
   }
 
@@ -62,30 +67,40 @@ export default class HomeView extends React.Component {
 
   // get data from server
   _fetchData() {
-    Storage.get('user').then(ret => {
-      this.setState({
-        no: ret.no
-      });
-    });
     Storage.get("run").then(ret => {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(ret.data),
-      });
-    }).catch(err => {
-      loadrun(this.state.no);
+      if(ret.data === null){
+        loadrun(this.state.no);
+        setTimeout( () => {
+          Storage.get('run').then(result => {
+            this.setState({
+              dataSource: this.state.dataSource.cloneWithRows(result.data),
+            }); 
+          })
+        }, 1000);
+      }else{
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(ret.data),
+        }); 
+      }
     });
   }
 
   renderRow(rowData, sectionID, rowID){
-    var id = parseInt(rowID)+1;
-    var stime = this.handleTimeFormat(new Date(rowData.starttime));
-    var etime = this.handleTimeFormat(new Date(rowData.endtime));
-    return (<Text>#{id}{'\n'}开始时间:{stime}{'\n'}结束时间:{etime}</Text>);
+    if(rowData !== null){
+      let id = parseInt(rowID)+1;
+      let date = new Date();
+      date.setTime(rowData.stime);
+      let stime = this.handleTimeFormat(date);
+      date.setTime(rowData.etime);
+      let etime = this.handleTimeFormat(date);
+      return (<Text>#{id}{'\n'}开始时间:{stime}{'\n'}结束时间:{etime}</Text>);
+    }
+    return (<Text>正在加载中</Text>);
   }
 
   handleTimeFormat(time){
-      var t = time.toISOString();
-      var ret = t.substr(0,10)+" "+t.substr(11,8);
+      let t = time.toISOString();
+      let ret = t.substr(0,10)+" "+t.substr(11,8);
       return ret;
   }
 

@@ -14,24 +14,23 @@ import {
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
 	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
-	if(no === '31301100' && pwd === '123'){
-		Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-		Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
-	}
+	// if(no === '31301100' && pwd === '123'){
+	// 	Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+	// 	Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+	// }
 
-	// Util.postform(url, data, (responseJson) => {
-	// 	if (responseJson.logined === true) {
-	// 		Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-	// 		Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
-	// 	}else{
-	// 		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
-	// 		Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
-	// 	}
-	// }, (err) => {
-	// 	console.log(err);
-	// 	Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
-	// 	Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
-	// })	
+	Util.postform(url, data, (responseJson) => {
+		if (responseJson.logined === true) {
+			Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+			Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+		}else{
+			Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+			Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+		}
+	}, (err) => {
+		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+		Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+	})	
 };
 
 export let update = (no, pwd) => {
@@ -45,7 +44,6 @@ export let update = (no, pwd) => {
             Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
 		}
 	}, (err) => {
-		console.log(err);
 	})
 }
 
@@ -58,7 +56,6 @@ export let addrun = (no, meter, stime, etime) => {
 			addRun2Storage(no, meter, stime, etime);
 		}
 		}, (err) => {
-			console.log(err);
 	})
 }
 
@@ -66,34 +63,27 @@ export let loadrun = (no) => {
 	let url = urls.urlLoadRun + '?no=' + no.toString();
 
 	Util.get(url, (responseJson) => {
-		console.log(responseJson);
 		if(responseJson !== null && responseJson.data !== null){
-			Storage.remove('run');
 			for(let i = 0; i < responseJson.data.length; i++){
-				addRun2Storage(responseJson.data.sno, responseJson.data.meter, responseJson.data.stime, responseJson.data.etime);
+				delete responseJson.data[i].id;
 			}
+			Storage.set('run', responseJson, 1000 * 3600 * 24 * 31);
 		}
-		}, (err) => {
-			console.log(err);
-	});
+	}, (err) => {}
+	);
 }
 
 function addRun2Storage(no, meter, stime, etime){
+	console.log('add run to storage.', no, meter, stime, etime);
 	Storage.get("run").then(ret => {
 		let data = ret.data;
 		data.push({
-			userno: no,
+			sno: no,
 	        meter: meter,
-	        time: etime-stime,
-	        starttime: handleTimeFormat(stime),
-	        endtime: handleTimeFormat(etime)
+	        time: (etime-stime)/1000,
+	        stime: stime,
+	        etime: etime
 		});
 		Storage.set("run", data, 1000 * 3600 * 24 * 31);
 	});
-}
-
-function handleTimeFormat(time){
-  let t = time.toISOString();
-  let ret = t.substr(0,10)+" "+t.substr(11,8);
-  return ret;
 }

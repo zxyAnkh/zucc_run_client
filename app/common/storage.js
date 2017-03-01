@@ -20,6 +20,7 @@ var storage = new Storage({
 global.storage = storage;
 
 export const clear = () => {
+	console.log('clear storage.');
 	storage.clearMap();
 }
 
@@ -38,7 +39,7 @@ export const get = (k) => {
 }
 
 export const set = (k, v, e) => {
-	console.log('set key value.' + k + ' ' + JSON.stringify(v) + ' ' + e);
+	console.log('set key value. ' + k + ' ' + JSON.stringify(v) + ' ' + e);
 	storage.save({
 		key: k,
 		rawData: v,
@@ -47,6 +48,7 @@ export const set = (k, v, e) => {
 }
 
 export const remove = (k) => {
+	console.log('remove ' + k);
 	storage.remove({
 		key: k
 	});

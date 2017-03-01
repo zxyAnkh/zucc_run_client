@@ -6,9 +6,9 @@
 let Util = {
 	get: (url, successCallback, failCallback) => {
         fetch(url)
-            .then((response) => response.text())
-            .then((responseText) => {
-                successCallback(responseText);
+            .then((response) => response.json())
+            .then((responseJson) => {
+                successCallback(responseJson);
             })
             .catch((err) => {
                 failCallback(err);
@@ -36,6 +36,7 @@ let Util = {
 	},
     postform: (url, data, successCallback, failCallback) => {
         let fetchOptions = {
+            credentials: 'same-origin',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
