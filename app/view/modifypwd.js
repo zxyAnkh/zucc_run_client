@@ -61,7 +61,7 @@ export default class ModifyPwdView extends React.Component{
       if(newpwd1 === newpwd2 && oldpwd !== newpwd1){
         Storage.get('user').then(ret => {
           if(ret.password === oldpwd){      
-            update(no, newpwd1);
+            update(no, oldpwd, newpwd1);
             let time = 0;
             let interval = setInterval(() => {
               Storage.get('loginstate').then(logret => {

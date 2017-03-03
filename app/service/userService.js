@@ -7,9 +7,6 @@ import async from 'async';
 import * as urls from '../common/urls';
 import Util from '../common/utils';
 import * as Storage from '../common/storage';
-import {
-	ToastAndroid,
-} from 'react-native';
 
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
@@ -28,22 +25,24 @@ export let auth = (no, pwd) => {
 			Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
 		}
 	}, (err) => {
+		console.log(err);
 		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
 		Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
 	})	
 };
 
-export let update = (no, pwd) => {
+export let update = (no, oldpwd, newpwd) => {
 	let url = urls.urlUpdate;
-	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
+	let data = 'no=' + no.toString() + '&oldpwd=' + oldpwd.toString() + '&newpwd=' + newpwd.toString();
 	
 	Util.postform(url, data, (responseJson) => {
-		console.log(responseJson);
-		if (responseJson !== null && responseJson.logined === true) {
-            Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+		console.log("update user password resposne: " , responseJson);
+		if (responseJson !== null && responseJson.result === true) {
+            Storage.set('user', {'no': no, 'password': newpwd}, 1000 * 3600 * 24 * 7);
             Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
 		}
 	}, (err) => {
+		console.log(err);
 	})
 }
 

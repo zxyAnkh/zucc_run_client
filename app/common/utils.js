@@ -36,7 +36,7 @@ let Util = {
 	},
     postform: (url, data, successCallback, failCallback) => {
         let fetchOptions = {
-            credentials: 'same-origin',
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

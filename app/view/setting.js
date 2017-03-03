@@ -67,7 +67,6 @@ export default class SettingView extends React.Component {
   renderRow(rowData, sectionID, rowID){
     if(rowData === "账号名称"){
       var userno = this.state.no;
-      console.log(userno);
       return (<Text>学号：{userno}</Text>);
     }else{
       return (<TouchableOpacity 
