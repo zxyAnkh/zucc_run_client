@@ -59,7 +59,6 @@ export default class SettingView extends React.Component {
         Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
         Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
         this.props.navigator.replace({id: 'login'});
-        // delete login info...
         logout();
     }else{
       return null;

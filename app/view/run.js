@@ -65,7 +65,7 @@ class RunningView extends React.Component{
 	    }
 		Storage.get('user').then(ret => {
 	        this.setState({
-	          no: ret.no
+	          	no: ret.no,
 	        })
 	      });
   	}
@@ -113,9 +113,10 @@ class RunningView extends React.Component{
 		          if(this.state.calc >= 5){
 		          	// 传送数据至服务端
 		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime);
-		          	this.props.navigator.replace({id: 'home'});
+		          	this.stop();
 		          	clearInterval(interval);
 		          	clearInterval(cleaninterval);
+		          	this.props.navigator.pop();
 		          }
 		        },100);
   			}
