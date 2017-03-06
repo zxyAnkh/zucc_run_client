@@ -31,6 +31,19 @@ export let auth = (no, pwd) => {
 	})	
 };
 
+export let logout = () => {
+	let url = urls.urlLogout;
+	let data = '';
+
+	Util.post(url, data, (responseJson) => {
+		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+		Storage.set('user', {'no': '', 'password': ''}, 1000 * 3600 * 24 * 7);
+	}, (err) => {
+		Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+		Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
+	})
+}
+
 export let update = (no, oldpwd, newpwd) => {
 	let url = urls.urlUpdate;
 	let data = 'no=' + no.toString() + '&oldpwd=' + oldpwd.toString() + '&newpwd=' + newpwd.toString();

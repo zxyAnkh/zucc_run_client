@@ -110,10 +110,12 @@ class RunningView extends React.Component{
 		          	second,
 		          	millsecond,
 		          })
-		          if(this.state.totalMeter >= 2000){
+		          if(this.state.calc >= 5){
 		          	// 传送数据至服务端
 		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime);
 		          	this.props.navigator.replace({id: 'home'});
+		          	clearInterval(interval);
+		          	clearInterval(cleaninterval);
 		          }
 		        },100);
   			}

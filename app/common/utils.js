@@ -16,6 +16,7 @@ let Util = {
 	},
 	post: (url, data, successCallback, failCallback) => {
 		let fetchOptions = {
+            credentials: 'include',
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',

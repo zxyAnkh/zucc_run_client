@@ -15,6 +15,7 @@ import {
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
 import * as Storage from '../common/storage';
+import {logout} from '../service/userService';
 
 export default class SettingView extends React.Component {
   constructor(props) {
@@ -55,10 +56,11 @@ export default class SettingView extends React.Component {
     if(data === "1"){
         this.props.navigator.push({id: 'modifypwd'});
     }else if(data === "2"){
-        Storage.remove('loginstate');
-        Storage.remove('user');
+        Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+        Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
         this.props.navigator.replace({id: 'login'});
         // delete login info...
+        logout();
     }else{
       return null;
     }
