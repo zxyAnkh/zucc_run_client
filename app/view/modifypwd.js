@@ -108,46 +108,48 @@ export default class ModifyPwdView extends React.Component{
 	  				}}
 	          		style={styles.topNav}
         		/>
-        		<View style={styles.inputContainer}>
-		          <TextInput
-		            ref="no"
-		            style={styles.inputs}
-		            placeholder="please input your old password"
-		            keyboardType="default"
-		            clearButtonMode="while-editing"
-		            returnKeyType="next"
-                onChangeText={this._onChangeOldPwd.bind(this)}
-		          />
-		          <View style={styles.line}></View>
-		          <TextInput
-		            ref="pwdInput"
-		            style={styles.inputs}
-		            password="true"
-		            secureTextEntry={true}
-		            placeholder="please input your new password"
-		            clearButtonMode="while-editing"
-		            returnKeyType="done"
-                onChangeText={this._onChangeNewPwd1.bind(this)}
-		          />
-		          <View style={styles.line}></View>
-		          <TextInput
-		            ref="pwdInput"
-		            style={styles.inputs}
-		            password="true"
-		            secureTextEntry={true}
-		            placeholder="please input your new password again"
-		            clearButtonMode="while-editing"
-		            returnKeyType="done"
-                onChangeText={this._onChangeNewPwd2.bind(this)}
-		          />
-		        </View>
-		        <View style={styles.buttonGroup}>
-		          <TouchableOpacity onPress={this.modify.bind(this)}>
-		            <View style={styles.Login}>
-		              <Text style={styles.LoginText}>确认修改</Text>
-		            </View>
-		          </TouchableOpacity>
-		        </View>
+            <View style={{marginTop: 40,alignItems: 'center',}}>
+          		<View style={styles.inputContainer}>
+  		          <TextInput
+  		            ref="no"
+  		            style={styles.inputs}
+  		            placeholder="请输入原密码"
+  		            keyboardType="default"
+  		            clearButtonMode="while-editing"
+  		            returnKeyType="next"
+                  onChangeText={this._onChangeOldPwd.bind(this)}
+  		          />
+  		          <View style={styles.line}></View>
+  		          <TextInput
+  		            ref="pwdInput"
+  		            style={styles.inputs}
+  		            password="true"
+  		            secureTextEntry={true}
+  		            placeholder="请输入新密码"
+  		            clearButtonMode="while-editing"
+  		            returnKeyType="done"
+                  onChangeText={this._onChangeNewPwd1.bind(this)}
+  		          />
+  		          <View style={styles.line}></View>
+  		          <TextInput
+  		            ref="pwdInput"
+  		            style={styles.inputs}
+  		            password="true"
+  		            secureTextEntry={true}
+  		            placeholder="请确认新密码"
+  		            clearButtonMode="while-editing"
+  		            returnKeyType="done"
+                  onChangeText={this._onChangeNewPwd2.bind(this)}
+  		          />
+  		        </View>
+  		        <View style={styles.buttonGroup}>
+  		          <TouchableOpacity onPress={this.modify.bind(this)}>
+  		            <View style={styles.btn}>
+  		              <Text style={styles.btntext}>确认修改</Text>
+  		            </View>
+  		          </TouchableOpacity>
+  		        </View>
+            </View>
   			</View>
   			);
   	}
@@ -160,12 +162,15 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   inputContainer: {
-    backgroundColor: '#f0ffff',
     borderRadius: 5,
+    alignItems: 'center',
+    width: 250,
     overflow: 'hidden',
+    justifyContent: 'center',
   },
   inputs: {
     height: 40,
+    width: 250,
     fontSize: 14,
     padding: 10,
   },
@@ -175,13 +180,14 @@ var styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 30,
+    width: 250,
   },
-  Login: {
+  btn: {
     alignItems: 'center',
     height: 40,
     backgroundColor: '#0379d5',
   },
-  LoginText: {
+  btntext: {
     marginTop: 10,
     fontSize: 16,
     color: '#fff',

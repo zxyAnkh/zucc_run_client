@@ -68,14 +68,23 @@ export default class SettingView extends React.Component {
   renderRow(rowData, sectionID, rowID){
     if(rowData === "账号名称"){
       var userno = this.state.no;
-      return (<Text>学号：{userno}</Text>);
+      return (
+        <View style={styles.nocontainer}>
+          <Text>学号：{userno}</Text>
+          <View style={styles.line}></View>
+        </View>);
     }else{
-      return (<TouchableOpacity 
-                onPress={() => this.onRowSelect(rowID)}>
-                <View>
-                  <Text>{rowData}</Text>
-                </View>
-              </TouchableOpacity>);
+      return (
+        <View style={styles.btncontainer}>
+          <TouchableOpacity 
+              style={styles.btn}
+              onPress={() => this.onRowSelect(rowID)}>
+            <View>
+                <Text style={styles.btnText}>{rowData}</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={{height:5, backgroundColor: '#fff',}}></View>
+        </View>);
     }
   }
 
@@ -137,9 +146,31 @@ var styles = StyleSheet.create({
     borderLeftWidth: 1, 
     borderLeftColor: '#0379d5'
   },
+  nocontainer:{
+    flexDirection: 'column',
+  },
+  btncontainer:{
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  line: {
+    height:80,
+    backgroundColor: '#fff',
+  },
   tabItem:{
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start'
-  }
+  },
+  btn: {
+    alignItems: 'center',
+    width: 250,
+    height: 40,
+    backgroundColor: '#0379d5',
+  },
+  btnText: {
+    marginTop: 8,
+    fontSize: 16,
+    color: '#fff',
+  },
 })

@@ -33,32 +33,32 @@ export default class HomeView extends React.Component {
       });
     });
     // Storage.remove('run');
-  //   Storage.set('run', {'data': [{
-  //    sno: '31301100',
-  //   meter: 2000,
-  //      time: 842,
-  //    stime: 'Jul 4, 2016 9:28:45 PM',
-  //     etime: 'Jul 4, 2016 9:42:47 PM'
-  //   }, {
-  //     sno: '31301100',
-  //     meter: 2000,
-  //     time: 1563,
-  //     stime: 'Jul 7, 2016 11:19:47 AM',   
-  //     etime: 'Jul 7, 2016 11:45:50 AM'   
-  //   }, {   
-  //     sno: '31301100',
-  //     meter: 2000.95,
-  //     time: 1020,
-  //     stime: 'Dec 3, 2016 4:00:00 PM',
-  //     etime: 'Dec 3, 2016 4:17:00 PM'
-  //   }, {
-  //     sno: '31301100',
-  //     meter: 2000,
-  //     time: 725,
-  //     stime: 'Dec 4, 2016 2:39:00 PM',
-  //     etime: 'Dec 4, 2016 2:51:05 PM'
-  //   }]
-  // }, 1000 * 3600 * 24 * 31);
+    Storage.set('run', {'data': [{
+      sno: '31301100',
+      meter: 2000,
+         time: 842,
+       stime: '1488885558849',
+        etime: '1488885558849'
+      }, {
+        sno: '31301100',
+        meter: 2000,
+        time: 1563,
+        stime: '1488885558849',   
+        etime: '1488885558849'   
+      }, {   
+        sno: '31301100',
+        meter: 2000.95,
+        time: 1020,
+        stime: '1488885558849',
+        etime: '1488885558849'
+      }, {
+        sno: '31301100',
+        meter: 2000,
+        time: 725,
+        stime: '1488885558849',
+        etime: '1488885558849'
+      }]
+    }, 1000 * 3600 * 24 * 31);
     this._fetchData();
   }
 
@@ -93,7 +93,15 @@ export default class HomeView extends React.Component {
       let stime = this.handleTimeFormat(date);
       date.setTime(rowData.etime);
       let etime = this.handleTimeFormat(date);
-      return (<Text>#{id}{'\n'}开始时间:{stime}{'\n'}结束时间:{etime}</Text>);
+      return (
+        <View style={styles.rowcontainer}>
+          <TouchableOpacity style={{}}>
+            <Text style={styles.rowno}>序号:{id}</Text>
+            <Text style={styles.rowtime}>开始时间:{stime}</Text>
+            <Text style={styles.rowtime}>结束时间:{etime}</Text>
+            <View style={styles.line}></View>
+          </TouchableOpacity>
+        </View>);
     }
     return (<Text>正在加载中</Text>);
   }
@@ -163,6 +171,22 @@ export default class HomeView extends React.Component {
 var styles = StyleSheet.create({
   container:{
     flex: 1,
+  },
+  rowcontainer:{
+    flexDirection: 'column',
+    width: 500,
+  },
+  rowno:{
+    fontSize: 15,
+    textAlign: 'auto',
+  },
+  rowtime:{
+    fontSize: 15,
+    textAlign: 'auto',
+  },
+  line: {
+    height:5,
+    backgroundColor: '#ccc',
   },
   listContainer: {
     flexDirection: 'row',
