@@ -10,7 +10,8 @@ import {
   Text,
   ListView,
   TouchableOpacity,
-  Animated
+  Animated,
+  Image
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
@@ -69,9 +70,14 @@ export default class SettingView extends React.Component {
     if(rowData === "账号名称"){
       var userno = this.state.no;
       return (
+        <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image source={require('../img/th.jpg')}/>
+        </View>
         <View style={styles.nocontainer}>
           <Text>学号：{userno}</Text>
           <View style={styles.line}></View>
+        </View>
         </View>);
     }else{
       return (
@@ -145,6 +151,19 @@ var styles = StyleSheet.create({
     borderRightColor: '#0379d5', 
     borderLeftWidth: 1, 
     borderLeftColor: '#0379d5'
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  logoContainer: {
+    backgroundColor: '#f0ffff',
+    marginTop: 80,
+    width: 80,
+    height: 80,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   nocontainer:{
     flexDirection: 'column',

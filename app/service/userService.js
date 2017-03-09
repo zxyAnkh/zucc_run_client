@@ -66,8 +66,10 @@ export let addrun = (no, meter, stime, etime) => {
 	Util.postform(url, data, (responseJson) => {
 		if(responseJson !== null && responseJson.result === true){
 			addRun2Storage(no, meter, stime, etime);
+			return true;
 		}
 		}, (err) => {
+			return false;
 	})
 }
 
