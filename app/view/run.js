@@ -85,7 +85,7 @@ class RunningView extends React.Component{
 	  			started: true,
 	  			initialTime: (new Date()).getTime()
 	  		})
-	  		this.showLocation();
+	  		// this.showLocation();
 	  		let millsecond, second, minute, countingTime;
 	  		let cleaninterval = setInterval(() => {
 	  			if (this.state.stoped) {
@@ -110,19 +110,20 @@ class RunningView extends React.Component{
 		          	second,
 		          	millsecond,
 		          })
+				  this.state.calc++;
 		          if(this.state.calc >= 5){
 		          	// 传送数据至服务端
-		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime)
-		          		.then(ret => {
-		          			if(ret.result === true){
-		          				Alert.alert("数据成功上传至服务端");
-		          			}else{
-		          				Alert.alert("数据上传至服务端失败");
-		          			}
-				          	this.stop();
-				          	clearInterval(interval);
-				          	clearInterval(cleaninterval);
-				          });
+		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime);
+		          	Storage.get('addRunResult').then(ret =>{
+	          			if(ret.result === true){
+	          				Alert.alert("数据成功上传至服务端");
+	          			}else{
+	          				Alert.alert("数据上传至服务端失败");
+	          			}
+			          	this.stop();
+			          	clearInterval(interval);
+			          	clearInterval(cleaninterval);
+			          });
 		          }
 		        },100);
   			}

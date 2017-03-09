@@ -66,10 +66,8 @@ export let addrun = (no, meter, stime, etime) => {
 	Util.postform(url, data, (responseJson) => {
 		if(responseJson !== null && responseJson.result === true){
 			addRun2Storage(no, meter, stime, etime);
-			return true;
 		}
 		}, (err) => {
-			return false;
 	})
 }
 
@@ -99,5 +97,6 @@ function addRun2Storage(no, meter, stime, etime){
 	        etime: etime
 		});
 		Storage.set("run", data, 1000 * 3600 * 24 * 31);
+		Storage.set('addRunResult', {'result': true}, 1000 * 60);
 	});
 }
