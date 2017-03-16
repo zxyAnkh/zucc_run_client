@@ -7,15 +7,17 @@ import async from 'async';
 import * as urls from '../common/urls';
 import Util from '../common/utils';
 import * as Storage from '../common/storage';
+import DeviceInfo from 'react-native-device-info';
 
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
-	let data = 'userno=' + no.toString() + '&password=' + pwd.toString();
+	let data = 'userno=' + no.toString() + '&password=' + pwd.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
 	// if(no === '31301100' && pwd === '123'){
 	// 	Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
 	// 	Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
 	// }
 
+	console.log(data);
 	Util.postform(url, data, (responseJson) => {
 		if (responseJson.logined === true) {
 			Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
@@ -46,7 +48,7 @@ export let logout = () => {
 
 export let update = (no, oldpwd, newpwd) => {
 	let url = urls.urlUpdate;
-	let data = 'no=' + no.toString() + '&oldpwd=' + oldpwd.toString() + '&newpwd=' + newpwd.toString();
+	let data = 'no=' + no.toString() + '&oldpwd=' + oldpwd.toString() + '&newpwd=' + newpwd.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
 	
 	Util.postform(url, data, (responseJson) => {
 		console.log("update user password resposne: " , responseJson);
@@ -61,7 +63,7 @@ export let update = (no, oldpwd, newpwd) => {
 
 export let addrun = (no, meter, stime, etime) => {
 	let url = urls.urlAddRun;
-	let data = 'sno=' + no.toString() + '&meter=' + meter.toString() + '&stime=' + stime.toString() + '&etime=' + etime.toString();
+	let data = 'sno=' + no.toString() + '&meter=' + meter.toString() + '&stime=' + stime.toString() + '&etime=' + etime.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
 
 	Util.postform(url, data, (responseJson) => {
 		if(responseJson !== null && responseJson.result === true){
