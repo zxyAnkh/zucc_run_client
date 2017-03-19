@@ -12,9 +12,6 @@ import{
 	TouchableHighlight,
 	Alert,
     NativeAppEventEmitter,
-    ActivityIndicator,
-    ActivityIndicatorIOS,
-    Platform
 } from 'react-native';
 import {addrun} from '../service/userService';
 import * as Storage from '../common/storage';
@@ -48,11 +45,8 @@ class RunningView extends React.Component{
         )
         AMapLocation.init(null)
         AMapLocation.setOptions({
+            pausesLocationUpdatesAutomatically: false,
             allowsBackgroundLocationUpdates: true,
-            gpsFirst: false,
-            onceLocation: false,
-            onceLocationLatest: false,
-            interval: 1000,
         })
 		Storage.get('user').then(ret => {
 	        this.setState({
