@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
-  InteractionManager
+  InteractionManager,
+  Platform
 } from 'react-native';
 import {auth} from '../service/userService';
 import * as Storage from '../common/storage';
@@ -46,22 +47,28 @@ export default class SignInView extends React.Component{
     
   }
 
+  showToast(msg){
+    if (Platform.OS === 'android') {  
+        ToastAndroid.show(msg, ToastAndroid.SHORT);
+    }
+  }
+
   _doSignIn(){
     let {no, pwd, startLogin, logined} = this.state;
 
     this.state.startLogin = true;
 
     if(!no.length || no.length !== 8){
-      ToastAndroid.show('学号错误.', ToastAndroid.SHORT);
+      this.showToast('学号错误.');
       return;
     }
     if(!pwd.length){
-      ToastAndroid.show('密码错误.', ToastAndroid.SHORT);
+      this.showToast('密码错误.');
       return;
     }
 
     if(no.length === 8 && pwd !== ""){
-      ToastAndroid.show('登录中，请稍候.', ToastAndroid.SHORT);
+      this.showToast('登录中，请稍候.');
       Storage.get('loginstate')
         .then(ret => {
           if(ret.state === true){

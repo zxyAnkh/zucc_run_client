@@ -40,4 +40,6 @@ buck-out/
 \.buckd/
 android/app/libs
 *.keystore
-/node_modules .zucc_run.text
+/node_modules 
+.zucc_run.text
+/ios/Pods

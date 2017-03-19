@@ -52,6 +52,12 @@ export default class ModifyPwdView extends React.Component{
       } 
   	}
 
+  showToast(msg){
+    if (Platform.OS === 'android') {  
+        ToastAndroid.show(msg, ToastAndroid.SHORT);
+    }
+  }
+
   	backToSetting(){
   		this.props.navigator.pop();
   	}
@@ -75,10 +81,10 @@ export default class ModifyPwdView extends React.Component{
               });
             }, 500);
             if(time < 6){
-              ToastAndroid.show('修改成功，请重新登录.', ToastAndroid.SHORT);
+              this.showToast('修改成功，请重新登录.');
               this.props.navigator.replace({id: 'login'});             
             }else{
-              ToastAndroid.show('修改失败.', ToastAndroid.SHORT); 
+              this.showToast('修改失败.'); 
             }
           }
         })

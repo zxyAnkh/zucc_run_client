@@ -11,7 +11,8 @@ import {
   ListView,
   TouchableOpacity,
   Animated,
-  Image
+  Image,
+  Platform
 } from 'react-native';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';

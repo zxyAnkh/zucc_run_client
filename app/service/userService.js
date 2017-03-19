@@ -12,10 +12,10 @@ import DeviceInfo from 'react-native-device-info';
 export let auth = (no, pwd) => {
 	let url = urls.urlLogin;
 	let data = 'userno=' + no.toString() + '&password=' + pwd.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
-	// if(no === '31301100' && pwd === '123'){
-	// 	Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-	// 	Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
-	// }
+	//if(no === '31301100' && pwd === '123'){
+	//	Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+	//	Storage.set('user', {'no': no, 'password': pwd}, 1000 * 3600 * 24 * 7);
+	//}
 
 	console.log(data);
 	Util.postform(url, data, (responseJson) => {

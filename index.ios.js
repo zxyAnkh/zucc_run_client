@@ -1,54 +1,77 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
+import SignInView from './app/view/signin';
+import HomeView from './app/view/home';
+import SettingView from './app/view/setting';
+import ModifyPwdView from './app/view/modifypwd';
+import RunningView from './app/view/run';
+import * as Storage from './app/common/storage';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TextInput,
+  Navigator
 } from 'react-native';
-import * as Storage from './app/common/storage';
 
-export default class zuccrun extends Component {
+var zuccrun = React.createClass({
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <SignInView></SignInView>
       </View>
     );
   }
-}
+});
 
-const styles = StyleSheet.create({
+var zuccrun = React.createClass({
+
+  getInitialState: function(){
+    // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
+    return {logined:false};
+  },
+
+  renderScene: function(route, nav){
+    switch(route.id){
+      case 'home':
+        return <HomeView navigator={nav}/>;
+      case 'setting':
+        return <SettingView navigator={nav}/>;
+      case 'login':
+        return <SignInView navigator={nav}/>;
+      case 'modifypwd':
+        return <ModifyPwdView navigator={nav}/>;
+      case 'running':
+        return <RunningView navigator={nav}/>;
+      default:
+        return (<SignInView navigator={nav}/>);
+    }
+  },
+
+  render: function(){
+    return (
+      <Navigator
+      style={{backgroundColor: '#fff'}}
+      initialRoute={{ id: "login" }}
+      renderScene={this.renderScene}
+      configureScene={(route) => {
+          if (route.sceneConfig) {
+              return route.sceneConfig;
+          }
+          return Navigator.SceneConfigs.FloatFromRight
+        }
+      }
+    />);
+  }
+
+});
+
+var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderWidth:1,
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 
-AppRegistry.registerComponent('zuccrun', () => zuccrun);
+AppRegistry.registerComponent('zucc_run', () => zuccrun);
