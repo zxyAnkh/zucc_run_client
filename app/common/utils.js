@@ -26,10 +26,9 @@ let Util = {
 		};
 
 		fetch(url, fetchOptions)
-			.then((response) => response.text())
-            .then((responseText) => {
-                let result = JSON.parse(responseText);
-                successCallback(result.status, result.code, result.message, result.data, result.share);
+			.then((response) => response.json())
+            .then((responseJson) => {
+                successCallback(responseJson);
             })
             .catch((err) => {
                 failCallback(err);

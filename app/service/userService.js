@@ -48,9 +48,14 @@ export let logout = () => {
 
 export let update = (no, oldpwd, newpwd) => {
 	let url = urls.urlUpdate;
-	let data = 'no=' + no.toString() + '&oldpwd=' + oldpwd.toString() + '&newpwd=' + newpwd.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
+	let data = {
+		"no":  no.toString(),
+		"oldpwd": oldpwd.toString(),
+		"newpwd": newpwd.toString(),
+		"phoneuid": DeviceInfo.getUniqueID()
+	};
 	
-	Util.postform(url, data, (responseJson) => {
+	Util.post(url, data, (responseJson) => {
 		console.log("update user password resposne: " , responseJson);
 		if (responseJson !== null && responseJson.result === true) {
             Storage.set('user', {'no': no, 'password': newpwd}, 1000 * 3600 * 24 * 7);
@@ -63,11 +68,19 @@ export let update = (no, oldpwd, newpwd) => {
 
 export let addrun = (no, meter, stime, etime) => {
 	let url = urls.urlAddRun;
-	let data = 'sno=' + no.toString() + '&meter=' + meter.toString() + '&stime=' + stime.toString() + '&etime=' + etime.toString() + '&phoneuid=' + DeviceInfo.getUniqueID();
+	let data = {
+		"no": no.toString(),
+		"meter": meter.toString(),
+		"starttime": stime.toString(),
+		"endtime": etime.toString(),
+		"phoneuid": DeviceInfo.getUniqueID()
+	};
 
-	Util.postform(url, data, (responseJson) => {
+	Util.post(url, data, (responseJson) => {
 		if(responseJson !== null && responseJson.result === true){
 			addRun2Storage(no, meter, stime, etime);
+		}else{
+			Storage.set('addRunResult', {'result': false}, 1000 * 60);
 		}
 		}, (err) => {
 	})

@@ -11,8 +11,8 @@ export const urlLogout = urlHost + '/user/logout';
 
 export const urlAddRun = urlHost + '/user/run';
 
-export const urlAsyncUser = urlHost + '/user/async';
+export const urlAsyncUser = urlHost + '/user/loadUserData';
 
-export const urlLoadRun = urlHost + '/user/getData';
+export const urlLoadRun = urlHost + '/user/loadRunData';
 
 export const urlUpdate = urlHost + '/user/update';

@@ -33,9 +33,9 @@ export default class SignInView extends React.Component{
   }
 
   componentDidMount(){
-    // Storage.set('loginstate', {'state': true}, 1000 * 3600 * 24 * 7);
-    // Storage.set('run', {'data' : null}, 1000 * 3600 * 24 * 31);
-    Storage.set('user', {'no': "31301100", 'password': "123"}, 1000 * 3600 * 24 * 7);
+    Storage.set('loginstate', {'state': false}, 1000 * 3600 * 24 * 7);
+    Storage.set('run', {'data' : null}, 1000 * 3600 * 24 * 31);
+    Storage.set('user', {'no': "", 'password': ""}, 1000 * 3600 * 24 * 7);
     Storage.get('loginstate').then(ret => {
       if(ret.state === true){
         this.props.navigator.replace({id: 'home'});
