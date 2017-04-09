@@ -9,6 +9,7 @@ import {
   View,
   Text,
   ListView,
+  RefreshControl,
   TouchableOpacity,
   Animated
 } from 'react-native';
@@ -17,10 +18,15 @@ import {loadrun} from '../service/userService';
 import NavigationBar from 'react-native-navbar';
 import Tabbar from 'react-native-tabbar';
 
+class ListRefersher extends React.Component{
+
+}
+
 export default class HomeView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      refreshing: false,
       no: '',
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     };
@@ -33,32 +39,32 @@ export default class HomeView extends React.Component {
       });
     });
     // Storage.remove('run');
-    // Storage.set('run', {'data': [{
-    //   sno: '31301100',
-    //   meter: 2000,
-    //      time: 842,
-    //    stime: '1488885558849',
-    //     etime: '1488885558849'
-    //   }, {
-    //     sno: '31301100',
-    //     meter: 2000,
-    //     time: 1563,
-    //     stime: '1488885558849',   
-    //     etime: '1488885558849'   
-    //   }, {   
-    //     sno: '31301100',
-    //     meter: 2000.95,
-    //     time: 1020,
-    //     stime: '1488885558849',
-    //     etime: '1488885558849'
-    //   }, {
-    //     sno: '31301100',
-    //     meter: 2000,
-    //     time: 725,
-    //     stime: '1488885558849',
-    //     etime: '1488885558849'
-    //   }]
-    // }, 1000 * 3600 * 24 * 31);
+    Storage.set('run', {'data': [{
+      sno: '31301100',
+      meter: 2000,
+         time: 842,
+       stime: '1488885558849',
+        etime: '1488885558849'
+      }, {
+        sno: '31301100',
+        meter: 2000,
+        time: 1563,
+        stime: '1488885558849',   
+        etime: '1488885558849'   
+      }, {   
+        sno: '31301100',
+        meter: 2000.95,
+        time: 1020,
+        stime: '1488885558849',
+        etime: '1488885558849'}]
+      // }, {
+      //   sno: '31301100',
+      //   meter: 2000,
+      //   time: 725,
+      //   stime: '1488885558849',
+      //   etime: '1488885558849'
+      // }]
+    }, 1000 * 3600 * 24 * 31);
     this._fetchData();
   }
 
@@ -141,6 +147,27 @@ export default class HomeView extends React.Component {
       )
   }
 
+  _refreshListView(){
+    this.setState({refreshing: true})
+    loadrun(this.state.no);
+    setTimeout( () => {
+          Storage.get('run').then(result => {
+            this.setState({
+              dataSource: this.state.dataSource.cloneWithRows(result.data),
+              refreshing: false
+            }); 
+          })
+        }, 1000);
+  }
+
+  _refreshControl(){
+    return (
+      <RefreshControl
+        refreshing={this.state.refreshing}
+        onRefresh={()=>this._refreshListView()} />
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -153,10 +180,10 @@ export default class HomeView extends React.Component {
           style={styles.topNav}
         />
         <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow.bind(this)}
-          style={styles.listContainer}
-        />
+           dataSource={this.state.dataSource}
+           renderRow={this.renderRow.bind(this)}
+           refreshControl={this._refreshControl()}
+           style={styles.listContainer}/>
         <Tabbar show={true}
                 disable={false}
                 ref={(ref) => this.tabarRef = ref}

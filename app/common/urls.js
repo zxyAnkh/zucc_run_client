@@ -3,7 +3,8 @@
  */
 'use strict';
 
-const urlHost = 'http://zxyankh.imwork.net:8072/ntr';
+// const urlHost = 'http://zxyankh.imwork.net:8072/ntr';
+const urlHost = 'http://192.168.56.1:8072/ntr';
 
 export const urlLogin = urlHost + '/user/login';
 
