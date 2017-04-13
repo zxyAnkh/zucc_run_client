@@ -20,7 +20,7 @@ import{
 } from 'react-native';
 import {addrun} from '../service/userService';
 import * as Storage from '../common/storage';
-import Distance from 'gps-distance';
+// import Distance from 'gps-distance';
 import NavigationBar from 'react-native-navbar';
 import AMapLocation from 'react-native-smart-amap-location'
 import AppEventListenerEnhance from 'react-native-smart-app-event-listener-enhance'
@@ -56,13 +56,6 @@ class RunningView extends React.Component{
             onceLocationLatest: false,
             interval: 1000,
         })
-	    if(Platform.OS === 'android'){
-	    	BackAndroid.addEventListener('hardwareBackPress', () => {
-	    		this.stop();
-	        	this.props.navigator.pop();
-	        	return true;
-	        })
-	    }
 		Storage.get('user').then(ret => {
 	        this.setState({
 	          	no: ret.no,
@@ -73,10 +66,6 @@ class RunningView extends React.Component{
   	componentWillUnMount() {
   		AMapLocation.cleanUp();
   		this.stop();
-    	if (Platform.OS === 'android') {  
-        	BackAndroid.removeEventListener('hardwareBackPress', () => {  
-        	});  
-      	} 
   	}
     
   	start(){
@@ -85,7 +74,7 @@ class RunningView extends React.Component{
 	  			started: true,
 	  			initialTime: (new Date()).getTime()
 	  		})
-	  		// this.showLocation();
+	  		this.showLocation();
 	  		let millsecond, second, minute, countingTime;
 	  		let cleaninterval = setInterval(() => {
 	  			if (this.state.stoped) {
@@ -110,8 +99,8 @@ class RunningView extends React.Component{
 		          	second,
 		          	millsecond,
 		          })
-				  this.state.calc++;
-		          if(this.state.calc >= 5){
+				  // this.state.calc++;
+		          if(this.state.calc >= 50){
 		          	// 传送数据至服务端
 		          	addrun(this.state.no, 2000, this.state.initialTime, this.state.currentTime);
 		          	setTimeout(() => {
@@ -145,12 +134,16 @@ class RunningView extends React.Component{
         	}
         }
         let [lastlatitude,lastlongitude, totalMeter, calc] = [this.state.latitude, this.state.longitude, this.state.totalMeter, this.state.calc];
+        let meter = 0;
 		if(calc === 0){
 			[lastlatitude,lastlongitude] = [latitude, longitude];
 		}
 		calc++;
-        let meter = Distance(lastlatitude, lastlongitude, latitude, longitude);
+		// let meter = 1;
+        meter = this.getDistance(lastlatitude, lastlongitude, latitude, longitude);
 	    totalMeter += meter;
+	    console.log("total meter: " + totalMeter);
+	    console.log(lastlatitude, lastlongitude, latitude, longitude);
         this.setState({
             latitude,
             longitude,
@@ -158,6 +151,21 @@ class RunningView extends React.Component{
             calc,
         });
   	}
+
+	toRad(n) {
+	  return n * Math.PI / 180;
+	};
+
+	getDistance(fromLat, fromLon, toLat, toLon) {
+	  var dLat = this.toRad(toLat - fromLat);
+	  var dLon = this.toRad(toLon - fromLon);
+	  var fromLat = this.toRad(fromLat);
+	  var toLat = this.toRad(toLat);
+	  var a = Math.pow(Math.sin(dLat / 2), 2) +
+	          (Math.pow(Math.sin(dLon / 2), 2) * Math.cos(fromLat) * Math.cos(toLat));
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	  return 6371 * c;
+	};
 
     showLocation(){
         AMapLocation.startUpdatingLocation();
@@ -206,11 +214,11 @@ class RunningView extends React.Component{
         			<Text style={styles.faceText}>{`00:${minute<10? "0"+minute:minute}:${second<10? "0"+second:second}.${millsecond<10? "0"+millsecond:millsecond}`}</Text>
         			<Text style={styles.faceText}>{`${this.state.totalMeter}米`}</Text>
         			<Text style={styles.faceText}>{`纬度 = ${latitude}, 经度 = ${longitude}`}</Text>
-        		</View>
+        		 </View>
         		<View style={styles.controlContainer}>
 			        <View style={{flex:1,alignItems:"center"}}>
 			            <TouchableHighlight style={styles.btnStart} underlayColor="#eee" onPress={()=> this.start()}>
-			              <Text style={styles.btnStartText}>开始</Text>
+			              <Text style={styles.btnStartText}>{this.state.started? "停止": "开始"}</Text>
 			            </TouchableHighlight>
 			        </View>
 			    </View>

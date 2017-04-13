@@ -152,6 +152,7 @@ export default class HomeView extends React.Component {
     loadrun(this.state.no);
     setTimeout( () => {
           Storage.get('run').then(result => {
+            console.log(result.data);
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(result.data),
               refreshing: false
